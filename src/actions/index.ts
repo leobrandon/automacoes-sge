@@ -144,3 +144,5 @@ export {excluirNotaFiscal} from './excluir-nota-fiscal.action';
 export {criarConselheiro} from './criar-conselheiro.action';
 export * from './criar-veiculo.action';
 export * from './excluir-veiculo.action';
+export * from './criar-local-almoxarifado.action';
+export * from './excluir-local-almoxarifado.action';

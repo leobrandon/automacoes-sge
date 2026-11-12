@@ -26,3 +26,4 @@ export * from './dependencia-fisica-da-escola.factory';
 export * from './sala-de-aula.factory';
 export * from './nota-fiscal.factory';
 export * from './veiculo.factory';
+export * from './local-almoxarifado.factory';
