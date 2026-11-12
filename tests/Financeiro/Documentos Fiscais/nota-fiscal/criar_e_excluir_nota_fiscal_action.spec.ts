@@ -12,7 +12,7 @@ test('Criar e excluir Notas Fiscais QAAUTO da própria execução', async ({page
   const erros: unknown[] = [];
   await loginSge(page, {timeout: 60000});
   try {
-    for (let i = 1; i <= quantidade; i++) await criarNotaFiscal(page, opcoes, i, nota => criadas.push(nota));
+    for (let i = 1; i <= quantidade; i++) await criarNotaFiscal(page, opcoes, i, undefined, nota => criadas.push(nota));
   } catch (erro) {
     erros.push(erro);
   } finally {
