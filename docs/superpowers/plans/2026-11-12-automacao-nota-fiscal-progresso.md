@@ -1,5 +1,14 @@
 # Progresso — automação de Nota Fiscal
 
+## Correções após revisão
+
+- Cada tentativa de gravação gera um identificador aleatório no campo textual Nº Contrato, com prefixo configurado e 10 dígitos hexadecimais. A exclusão exige esse formato, confere toda a identificação e compara o campo persistido antes de clicar em Excluir. Um JSON antigo com número/chave reutilizados e identificador diferente não coincide com o novo registro. A nota 1/900 permanece bloqueada explicitamente. O JSON de exclusão foi esvaziado para receber uma identificação de criação futura; notas antigas com o formato anterior não são aceitas pela exclusão atual.
+- A identificação é impressa e comunicada ao ciclo antes da tentativa de salvar. A limpeza consulta a chave e só tenta excluir se houver uma linha; a conferência do identificador ocorre antes da exclusão. Falhas de consulta ou limpeza são relatadas. Uma gravação que termine no servidor depois de uma consulta vazia continua exigindo verificação manual.
+- A varredura de paginação só termina sem rodapé quando a grade informa `<Nenhum resultado>`; grade sem resultado explícito e sem resumo lança erro em vez de presumir que não existem outras páginas.
+- O prefixo configurado de Nº Contrato deve ser `QAAUTO` ou `QAAUTO` seguido por até dois caracteres alfanuméricos, para caber o identificador nos 20 caracteres da tela.
+- `npx tsc --noEmit`: passou após as alterações. Primeira tentativa E2E falhou no login de 20 segundos, antes da criação; o spec do ciclo passou a usar 60 segundos, conforme diagnóstico anterior da homologação.
+- Versão final: dois comandos independentes do spec `criar_e_excluir_nota_fiscal_action.spec.ts`, fora do sandbox, regression/workers=1/retries=0: **1 passed (21,9 s)** e **1 passed (20,2 s)**. Cada execução criou e removeu sua própria nota 2/900 com identificador distinto. As condições de falha de rede após a gravação e de rodapé ausente não foram reproduzidas nos E2E.
+
 **Status: Concluído.** TypeScript, criação isolada, exclusão isolada e dois ciclos completos passaram. E2E executado fora do ambiente restrito a pedido do responsável, com `--project=regression --workers=1 --retries=0`.
 
 ## Painel

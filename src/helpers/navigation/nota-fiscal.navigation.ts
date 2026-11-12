@@ -148,7 +148,7 @@ async function confirmarSucesso(page: Page, texto: string, fechamentoAutomatico 
   await expect(aviso).toBeHidden();
 }
 
-export async function salvarNotaFiscal(page: Page, aoSalvar: () => void): Promise<void> {
+export async function salvarNotaFiscal(page: Page): Promise<void> {
   await observarFeedbackNotaFiscal(page);
   const [res] = await Promise.all([resposta(page, '/NotaFiscal/POSTEditar', 'POST'), botao(page, /Salvar/).click()]);
   await exigirHttp(res);
@@ -156,7 +156,6 @@ export async function salvarNotaFiscal(page: Page, aoSalvar: () => void): Promis
   const mensagem = await feedback(page);
   const erros = (await main(page).locator('.field-validation-error').allInnerTexts()).filter(t => t.trim());
   if (!mensagem.includes('Nota Fiscal adicionada.')) throw new Error(`SGE recusou a nota: ${[mensagem, ...erros].join(' | ')}`);
-  aoSalvar();
   await confirmarSucesso(page, 'Nota Fiscal adicionada.', true);
   await expect(botao(page, /Excluir/)).toBeVisible();
 }
