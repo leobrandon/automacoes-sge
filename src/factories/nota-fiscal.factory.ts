@@ -60,6 +60,6 @@ export function buildNotaFiscal(opcoes: NotaFiscalOpcoes, sequencia = numeroInic
 
 export function protegerExclusaoNotaFiscal(nota: NotaFiscalMontada): void {
   if (nota.chaveAcesso === '52261189379821000194559000000000011000000018' || (nota.numero === '1' && nota.serie === '900' && nota.fornecedor === 'QAAUTO Fornecedor Pessoa Jurídica 1')) throw new Error('Exclusão recusada: nota preexistente protegida (1/900).');
-  if (!isNotaFiscalQAAuto(nota.fornecedor) || !/^QAAUTO [0-9A-F]{12}$/.test(nota.numeroContrato)) throw new Error('Exclusão exige fornecedor QAAUTO e identificador único da execução em Nº Contrato.');
+  if (!isNotaFiscalQAAuto(nota.fornecedor) || !/^QAAUTO(?: [A-Za-z0-9]{1,2})? [0-9A-F]{10}$/.test(nota.numeroContrato)) throw new Error('Exclusão exige fornecedor QAAUTO e identificador único da execução em Nº Contrato.');
   if (gerarChaveAcesso(nota.cnpjFornecedor, nota.serie, nota.numero, nota.dataEmissao) !== nota.chaveAcesso) throw new Error('Identificação da nota incoerente com a chave de acesso.');
 }
