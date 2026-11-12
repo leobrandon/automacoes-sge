@@ -146,3 +146,5 @@ export * from './criar-veiculo.action';
 export * from './excluir-veiculo.action';
 export * from './criar-local-almoxarifado.action';
 export * from './excluir-local-almoxarifado.action';
+export * from './criar-depreciacao-patrimonio.action';
+export * from './excluir-depreciacao-patrimonio.action';
