@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "cmd",
+      "args": ["/c", "npx", "@playwright/mcp@latest"]
+    },
+    "sue-regras-negocio": {
+      "type": "http",
+      "url": "http://192.168.88.109:8081/mcp"
+    }
+  }
+}

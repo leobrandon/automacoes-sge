@@ -1,0 +1,32 @@
+{
+  "quantidade": 1,
+  "descricao": "",
+  "composicaoEnsino": "ENSINO MÉDIO INOVADOR",
+  "anoEscolar": "2° SÉRIE",
+  "componente": "ARTES",
+  "componentes": ["ARTES", "CIÊNCIAS", "COMPUTAÇÃO"],
+  "componenteAlternativo": "ARTES",
+  "ativo": "Sim",
+  "estruturas": [
+    {
+      "descricao": "QAAUTO Estrutura Curricular 1",
+      "possuiCodigo": "Sim",
+      "ativo": "Sim",
+      "itens": [
+        { "descricao": "QAAUTO Item Curricular 1", "codigo": "001", "ativo": "Sim" }
+      ]
+    },
+    {
+      "descricao": "QAAUTO Estrutura Curricular 2",
+      "possuiCodigo": "Não",
+      "ativo": "Sim",
+      "itens": [
+        {
+          "descricao": "QAAUTO Item Curricular 2",
+          "descricaoItemPai": "QAAUTO Item Curricular 1",
+          "ativo": "Sim"
+        }
+      ]
+    }
+  ]
+}

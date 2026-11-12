@@ -1,0 +1,12 @@
+{
+  "descricao": "QAAUTO Tipo de Registro Pedagógico Planejamento",
+  "tipoTurma": "Escolarização",
+  "ano": 2026,
+  "composicao": "COMPOSIÇÃO DE ENSINO ANOS INICIAIS",
+  "anosEscolares": ["1º ANO"],
+  "ativo": true,
+  "finalidade": "Não definida",
+  "periodicidade": "Bimestral",
+  "tipoRegistro": "Único",
+  "tipoAssinatura": "Padrão do Sistema"
+}

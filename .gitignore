@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+node_modules/
+test-results/
+playwright-report/
+.playwright-mcp/
+.superpowers/
+debug.log
+.claude/settings.local.json

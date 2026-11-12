@@ -1,0 +1,263 @@
+{
+  "quantidade": 1,
+  "descricao": "",
+  "tipo": "Mensal",
+  "colunaRefeicao": "Saída 1 Entrada 2",
+  "cargaHorariaFixaEmHoras": "",
+  "horarioFechamentoNoturno": "",
+  "horario24Horas": true,
+  "habilitarBatidasPreAssinaladas": false,
+  "preencherFolgaEmBranco": false,
+  "bancoDeHoras": false,
+  "horaExtra": true,
+  "adicionalNoturno": false,
+  "exibirHoraDiurnaReduzida": false,
+  "horaDiurnaReduzida": "",
+  "exibirHoraNoturnaReduzida": false,
+  "horaNoturnaReduzida": "",
+  "jornada": {
+    "domingo": {
+      "entrada1": "",
+      "saida1": "",
+      "entrada2": "",
+      "saida2": "",
+      "entrada3": "",
+      "saida3": "",
+      "entrada4": "",
+      "saida4": "",
+      "entrada5": "",
+      "saida5": "",
+      "toleranciaFalta": "",
+      "toleranciaExtra": "",
+      "cargaHoraria": "",
+      "almocoLivre": false,
+      "compensado": false,
+      "neutro": false
+    },
+    "segunda": {
+      "entrada1": "08:00",
+      "saida1": "12:00",
+      "entrada2": "13:30",
+      "saida2": "18:00",
+      "entrada3": "",
+      "saida3": "",
+      "entrada4": "",
+      "saida4": "",
+      "entrada5": "",
+      "saida5": "",
+      "toleranciaFalta": "",
+      "toleranciaExtra": "",
+      "cargaHoraria": "",
+      "almocoLivre": false,
+      "compensado": false,
+      "neutro": false
+    },
+    "terca": {
+      "entrada1": "08:00",
+      "saida1": "12:00",
+      "entrada2": "13:30",
+      "saida2": "18:00",
+      "entrada3": "",
+      "saida3": "",
+      "entrada4": "",
+      "saida4": "",
+      "entrada5": "",
+      "saida5": "",
+      "toleranciaFalta": "",
+      "toleranciaExtra": "",
+      "cargaHoraria": "",
+      "almocoLivre": false,
+      "compensado": false,
+      "neutro": false
+    },
+    "quarta": {
+      "entrada1": "08:00",
+      "saida1": "12:00",
+      "entrada2": "13:30",
+      "saida2": "18:00",
+      "entrada3": "",
+      "saida3": "",
+      "entrada4": "",
+      "saida4": "",
+      "entrada5": "",
+      "saida5": "",
+      "toleranciaFalta": "",
+      "toleranciaExtra": "",
+      "cargaHoraria": "",
+      "almocoLivre": false,
+      "compensado": false,
+      "neutro": false
+    },
+    "quinta": {
+      "entrada1": "08:00",
+      "saida1": "12:00",
+      "entrada2": "13:30",
+      "saida2": "18:00",
+      "entrada3": "",
+      "saida3": "",
+      "entrada4": "",
+      "saida4": "",
+      "entrada5": "",
+      "saida5": "",
+      "toleranciaFalta": "",
+      "toleranciaExtra": "",
+      "cargaHoraria": "",
+      "almocoLivre": false,
+      "compensado": false,
+      "neutro": false
+    },
+    "sexta": {
+      "entrada1": "08:00",
+      "saida1": "12:00",
+      "entrada2": "13:30",
+      "saida2": "18:00",
+      "entrada3": "",
+      "saida3": "",
+      "entrada4": "",
+      "saida4": "",
+      "entrada5": "",
+      "saida5": "",
+      "toleranciaFalta": "",
+      "toleranciaExtra": "",
+      "cargaHoraria": "",
+      "almocoLivre": false,
+      "compensado": false,
+      "neutro": false
+    },
+    "sabado": {
+      "entrada1": "",
+      "saida1": "",
+      "entrada2": "",
+      "saida2": "",
+      "entrada3": "",
+      "saida3": "",
+      "entrada4": "",
+      "saida4": "",
+      "entrada5": "",
+      "saida5": "",
+      "toleranciaFalta": "",
+      "toleranciaExtra": "",
+      "cargaHoraria": "",
+      "almocoLivre": false,
+      "compensado": false,
+      "neutro": false
+    }
+  },
+  "horasExtras": {
+    "usarConfiguracaoDoHorario": "",
+    "percentuais": {
+      "diaUtil": "",
+      "sabado": "",
+      "domingo": "",
+      "feriado": "",
+      "facultativo": "",
+      "diaUtilNoturno": "",
+      "sabadoNoturno": "",
+      "domingoNoturno": "",
+      "folga": "",
+      "facultativoNoturno": ""
+    }
+  },
+  "colunas": {
+    "HT": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "CH": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "SP": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "SN": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "EA": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "SA": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "AB": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "BS": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "BT": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "BC": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "BD": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "BA": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "ADCNOT": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "HRD": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "JUS": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "EXT": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "AN": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "SPDR": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "SNDR": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    },
+    "ResponsavelImediato": {
+      "impressao": "",
+      "edicao": "",
+      "preFolha": ""
+    }
+  }
+}

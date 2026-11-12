@@ -1,0 +1,9 @@
+{
+  "excluirSomenteDescricoesConfiguradas": true,
+  "descricao": "QAAUTO Tipo de Registro Pedagógico Planejamento 1",
+  "tipo": "Planejamento",
+  "tipoTurma": "Escolarização",
+  "ano": 2026,
+  "composicao": "ANOS INICIAIS",
+  "anosEscolares": ["1° ANO W"]
+}

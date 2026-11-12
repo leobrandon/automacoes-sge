@@ -1,0 +1,20 @@
+{
+  "quantidade": 2,
+  "descricao": "QAAUTO Tipo de Ocorrência Escolar",
+  "ativo": "Sim",
+  "parametrizacao": {
+    "naturezaOcorrencia": "Não",
+    "dataOcorrencia": "Sim e Obrigatório",
+    "turnoOcorrencia": "Sim",
+    "horaOcorrencia": "Não",
+    "descricaoOcorrencia": "Sim e Obrigatório",
+    "procedimentoAdotado": "Sim",
+    "informarEnvolvidos": "Sim e Obrigatório"
+  },
+  "dadosEnvolvidos": {
+    "aluno": "Sim",
+    "responsavelDoAluno": "Sim",
+    "servidor": "Sim",
+    "outro": "Não"
+  }
+}

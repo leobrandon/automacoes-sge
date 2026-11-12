@@ -1,0 +1,26 @@
+{
+  "quantidade": 1,
+  "descricao": "",
+  "nivel": "Educação Fundamental",
+  "tipo": "Estrutura ABC",
+  "dataResolucao": "01/01/2026",
+  "numeroResolucao": "1",
+  "grades": [
+    {
+      "anoEscolar": "1º ANO - COMPOSIÇÃO DE ENSINO ANOS INICIAIS",
+      "componente": "Matemática",
+      "cargaHoraria": "40",
+      "aulasSemanais": "1",
+      "aulasPresenciais": "1",
+      "aulasNaoPresenciais": "0"
+    },
+    {
+      "anoEscolar": "2º ANO - COMPOSIÇÃO DE ENSINO ANOS INICIAIS",
+      "componente": "Matemática",
+      "cargaHoraria": "40",
+      "aulasSemanais": "1",
+      "aulasPresenciais": "1",
+      "aulasNaoPresenciais": "0"
+    }
+  ]
+}

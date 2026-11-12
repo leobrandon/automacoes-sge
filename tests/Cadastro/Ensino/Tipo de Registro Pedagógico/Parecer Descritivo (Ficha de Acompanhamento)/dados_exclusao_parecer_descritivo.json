@@ -1,0 +1,9 @@
+{
+  "excluirSomenteDescricoesConfiguradas": true,
+  "descricao": "QAAUTO Tipo de Registro Pedagógico Parecer Descritivo 1",
+  "tipo": "Parecer Descritivo (Ficha de Acompanhamento)",
+  "tipoTurma": "Escolarização",
+  "ano": 2026,
+  "composicao": "ANOS INICIAIS",
+  "anosEscolares": ["1° ANO W"]
+}

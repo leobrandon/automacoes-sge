@@ -1,0 +1,14 @@
+{
+  "descricao": "QAAUTO Tipo de Registro Pedagógico Atividades Específicas",
+  "tipoTurma": "Escolarização",
+  "ano": 2026,
+  "composicao": "ANOS INICIAIS",
+  "ativo": true,
+  "agrupador": "QAAUTO Agrupador de Atividades Específicas",
+  "item": {
+    "tipo": "Texto Livre",
+    "titulo": "QAAUTO Item de Atividades Específicas",
+    "obrigatorio": true,
+    "tamanhoMaximo": 1000
+  }
+}

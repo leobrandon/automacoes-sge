@@ -1,0 +1,18 @@
+{
+  "codigoInicial": "261112",
+  "descricao": "QAAUTO Escala de Proficiência",
+  "composicaoEnsino": "COMPOSIÇÃO DE ENSINO ANOS INICIAIS",
+  "ativo": true,
+  "parametros": [
+    {
+      "pontuacaoInicial": "0",
+      "pontuacaoFinal": "10",
+      "idadeAte": "5",
+      "dataAntes": "01/01",
+      "idadeApartir": "6",
+      "dataApartir": "31/12",
+      "equivalenciaSaida": "Ensino fundamental de 9 anos - 1º ano [14]",
+      "concluiCorrecaoFluxo": false
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "descricao": "QAAUTO Tipo de Registro Pedagógico Parecer Descritivo",
+  "tipoTurma": "Escolarização",
+  "ano": 2026,
+  "composicao": "ANOS INICIAIS",
+  "anosEscolares": ["1° ANO W"],
+  "ativo": true,
+  "finalidade": "Não definida",
+  "periodicidade": "Bimestral",
+  "tipoAssinatura": "Padrão do Sistema"
+}

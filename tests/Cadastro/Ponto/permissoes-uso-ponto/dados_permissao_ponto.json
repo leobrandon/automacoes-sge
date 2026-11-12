@@ -1,0 +1,9 @@
+{
+  "quantidade": 1,
+  "descricao": "",
+  "acessoPreFolha": true,
+  "inserirJustificativaPreFolha": true,
+  "permitirRegistroManual": false,
+  "registrarPontoViaAplicativo": true,
+  "permitirRegistrarForaDoRaio": false
+}

@@ -1,0 +1,11 @@
+{
+  "nome": "QAAUTO Conselheiro Dois",
+  "nascimento": "01/01/1990",
+  "email": "qaauto.conselheirodois@example.invalid",
+  "cep": "74000000",
+  "logradouro": "QAAUTO Rua de Teste",
+  "sexo": "Masculino",
+  "estado": "GOIÁS",
+  "cidade": "GOIÂNIA",
+  "bairro": "QAAUTO Bairro Conselheiro 1"
+}

@@ -1,0 +1,21 @@
+{
+  "quantidade": 1,
+  "descricao": "",
+  "anoLetivo": "2026",
+  "datas": {
+    "InicioPrimeiroBimestre": "01/02/2026",
+    "FimPrimeiroBimestre": "30/04/2026",
+    "LimiteRegistroConteudoPrimeiroBimestre": "30/04/2026",
+    "InicioSegundoBimestre": "01/05/2026",
+    "FimSegundoBimestre": "30/06/2026",
+    "LimiteRegistroConteudoSegundoBimestre": "30/06/2026",
+    "InicioTerceiroBimestre": "01/07/2026",
+    "FimTerceiroBimestre": "30/09/2026",
+    "LimiteRegistroConteudoTerceiroBimestre": "30/09/2026",
+    "InicioQuartoBimestre": "01/10/2026",
+    "FimQuartoBimestre": "20/12/2026",
+    "LimiteRegistroConteudoQuartoBimestre": "20/12/2026",
+    "FimPrimeiroSemestre": "30/06/2026",
+    "FimSegundoSemestre": "20/12/2026"
+  }
+}
