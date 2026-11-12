@@ -35,3 +35,4 @@ export * from './dependencia-fisica-da-escola.navigation';
 export * from './sala-de-aula.navigation';
 export * from './nota-fiscal.navigation';
 export * from './veiculo.navigation';
+export * from './local-almoxarifado.navigation';
