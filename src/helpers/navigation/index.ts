@@ -36,3 +36,4 @@ export * from './sala-de-aula.navigation';
 export * from './nota-fiscal.navigation';
 export * from './veiculo.navigation';
 export * from './local-almoxarifado.navigation';
+export * from './depreciacao-patrimonio.navigation';
