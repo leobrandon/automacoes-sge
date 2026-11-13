@@ -158,3 +158,5 @@ export * from './criar-acompanhamento.action';
 export * from './criar-turma-aee.action';
 export * from './excluir-turma-aee.action';
 export * from './concluir-acompanhamento.action';
+export * from './criar-turma-diversificada.action';
+export * from './excluir-turma-diversificada.action';
