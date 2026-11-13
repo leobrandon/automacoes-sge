@@ -43,3 +43,4 @@ export * from './tipo-pauta.navigation';
 export * from './acompanhamento.navigation';
 export * from './turma-aee.navigation';
 export * from './turma-diversificada.navigation';
+export * from './turma-alternativa.navigation';

@@ -160,3 +160,5 @@ export * from './excluir-turma-aee.action';
 export * from './concluir-acompanhamento.action';
 export * from './criar-turma-diversificada.action';
 export * from './excluir-turma-diversificada.action';
+export * from './criar-turma-alternativa.action';
+export * from './excluir-turma-alternativa.action';
