@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { test, expect } from '@playwright/test';
-import { loginSge } from '../../../src/helpers';
-import { criarTurmaEscolarizacao, criarAluno } from '../../../src/actions';
-import { buildTurma, buildAluno } from '../../../src/factories';
+import { loginSge } from '../../../../src/helpers';
+import { criarTurmaEscolarizacao, criarAluno } from '../../../../src/actions';
+import { buildTurma, buildAluno } from '../../../../src/factories';
 
 /**
  * Teste E2E Integrado: Criação de Turma + Criação de Aluno com Alocação Direta
@@ -41,7 +41,7 @@ test.describe('Fluxo Integrado: Criar Turma e Alocar Aluno', () => {
     }
 
     // Leitura opcional de dados_aluno.json para customizações ou fallback da quantidade
-    const caminhoJsonAluno = path.resolve(__dirname, '../../Aluno/cadastro/dados_aluno.json');
+    const caminhoJsonAluno = path.resolve(__dirname, '../../../Aluno/cadastro/dados_aluno.json');
     let dadosCustomizadosAluno: Record<string, any> = {};
     if (fs.existsSync(caminhoJsonAluno)) {
       try {

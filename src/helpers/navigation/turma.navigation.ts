@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { waitForSgeLoaders } from './common.navigation';
 
 /**
@@ -111,4 +111,66 @@ export async function navegarParaAdicionarTurma(
     .first()
     .waitFor({ state: 'visible', timeout: 20000 });
   await waitForSgeLoaders(page);
+}
+
+const ROTA_CONSULTA_TURMAS = /\/turma\/index(?:grid)?$/i;
+
+export function escaparRegexTurma(texto: string): string {
+  return texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/** Pesquisa pelo campo da consulta de Turmas (qualquer tipo) e espera a grade responder à busca. */
+export async function pesquisarTurma(page: Page, termo: string): Promise<void> {
+  const conteudo = page.locator('#main');
+  await navegarParaConsultaTurmas(page);
+  await expect(conteudo.locator('#searchTerm')).toBeVisible();
+  await waitForSgeLoaders(page);
+  await conteudo.locator('#searchTerm').fill(termo);
+
+  const [resposta] = await Promise.all([
+    page.waitForResponse((response) => {
+      const url = new URL(response.url());
+      return ROTA_CONSULTA_TURMAS.test(url.pathname)
+        && url.searchParams.get('searchTerm') === termo
+        && response.request().method() === 'GET';
+    }, { timeout: 20000 }),
+    conteudo.locator('#btnSubmitSearch').click(),
+  ]);
+
+  if (!resposta.ok()) throw new Error(`A consulta de Turmas retornou HTTP ${resposta.status()}.`);
+  await waitForSgeLoaders(page);
+  await expect(conteudo.locator('table')).toBeVisible();
+}
+
+/** Linha da grade cuja descrição é exatamente `descricao` (o SGE grava a descrição em maiúsculas: ignora caixa). */
+export function linhaTurma(page: Page, descricao: string): Locator {
+  const exata = new RegExp(`^\\s*${escaparRegexTurma(descricao.trim())}\\s*$`, 'i');
+  const texto = page.getByText(exata).filter({ visible: true });
+  return page.locator('#main table tbody tr:visible').filter({ has: texto });
+}
+
+export function celulaDescricaoTurma(linha: Locator, descricao: string): Locator {
+  return linha.getByText(new RegExp(`^\\s*${escaparRegexTurma(descricao.trim())}\\s*$`, 'i')).filter({ visible: true });
+}
+
+const LIMITE_BUSCA_SEQUENCIA_TURMA = 200;
+
+/**
+ * Menor sequência >= `inicio` cuja descrição ainda não existe na consulta. As turmas criadas por execuções
+ * anteriores ficam no ambiente, então a descrição (que o SGE não deixa repetir) define a próxima sequência.
+ */
+export async function proximaSequenciaLivreTurma(
+  page: Page,
+  descricaoDaSequencia: (sequencia: number) => string,
+  inicio = 1,
+): Promise<number> {
+  for (let sequencia = inicio; sequencia < inicio + LIMITE_BUSCA_SEQUENCIA_TURMA; sequencia++) {
+    const descricao = descricaoDaSequencia(sequencia);
+    await pesquisarTurma(page, descricao);
+    if (await linhaTurma(page, descricao).count() === 0) return sequencia;
+  }
+  throw new Error(
+    `Nenhuma sequência livre nas ${LIMITE_BUSCA_SEQUENCIA_TURMA} tentativas a partir de ${inicio}. `
+    + 'Exclua as turmas QAAUTO criadas por execuções anteriores.',
+  );
 }

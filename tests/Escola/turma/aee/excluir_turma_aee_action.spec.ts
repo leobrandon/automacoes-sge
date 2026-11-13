@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
-import { criarTurmaAee, excluirTurmaAee, type TurmaAeeIdentificador } from '../../../src/actions';
-import { loginSge } from '../../../src/helpers';
-import { linhaTurmaAee, pesquisarTurmaAee } from '../../../src/helpers/navigation/turma-aee.navigation';
+import { criarTurmaAee, excluirTurmaAee, type TurmaAeeIdentificador } from '../../../../src/actions';
+import { loginSge } from '../../../../src/helpers';
+import { linhaTurmaAee, pesquisarTurmaAee } from '../../../../src/helpers/navigation/turma-aee.navigation';
 import { lerConfiguracaoCriacaoTurmaAee } from './turma_aee_config';
 
 const BASE_URL = process.env.BASE_URL || 'https://homologa-sge.pontoid.com.br';
