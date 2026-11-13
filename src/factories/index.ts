@@ -32,3 +32,4 @@ export * from './area-atuacao.factory';
 export * from './metrica-acompanhamento.factory';
 export * from './tipo-pauta.factory';
 export * from './acompanhamento.factory';
+export * from './turma-aee.factory';
