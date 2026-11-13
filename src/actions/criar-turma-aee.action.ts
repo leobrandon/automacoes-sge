@@ -1,6 +1,7 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { buildTurmaAee, type BuildTurmaAeeOptions, type TurmaAeeData } from '../factories/turma-aee.factory';
-import { select2 } from '../helpers/select2.helper';
+import { proximaSequenciaLivreTurma } from '../helpers/navigation/turma.navigation';
+import { esperarOpcoesCarregadas, selecionarOpcaoApoio } from '../helpers/turma-apoio.helper';
 import { getByRoleSge } from '../helpers/sge-locators.helper';
 import {
   linhaTurmaAee,
@@ -24,55 +25,6 @@ export interface CriarTurmaAeeHooks {
 
 function normalizar(texto: string): string {
   return texto.trim().toLocaleLowerCase('pt-BR');
-}
-
-async function esperarOpcoesCarregadas(page: Page, idSelect: string, nomeCampo: string): Promise<void> {
-  const select = page.locator(`#${idSelect}`);
-  await expect.poll(async () => select.locator('option').evaluateAll((opcoes) =>
-    opcoes.filter((opcao) => (opcao as HTMLOptionElement).value !== '').length
-  ), {
-    timeout: 15000,
-    message: `A lista de ${nomeCampo} não terminou de carregar depois da seleção do campo anterior.`,
-  }).toBeGreaterThan(0);
-}
-
-async function exigirOpcaoDeApoio(
-  page: Page,
-  idSelect: string,
-  desejada: string,
-  nomeCadastro: string,
-): Promise<void> {
-  const container = page.locator(`#s2id_${idSelect}`);
-  const trigger = container.locator('.select2-choice, .select2-choices').first();
-  await expect(trigger).toBeVisible();
-  await trigger.click();
-
-  const dropdown = page.locator('#select2-drop:visible').first();
-  await expect(dropdown).toBeVisible();
-  const opcoes = dropdown.locator('ul.select2-results li.select2-result-selectable');
-  const textos = (await opcoes.allInnerTexts()).map((texto) => texto.trim()).filter(Boolean);
-  await page.keyboard.press('Escape');
-
-  if (textos.length === 0) {
-    throw new Error(`Nenhum registro de ${nomeCadastro} está disponível para a Turma AEE.`);
-  }
-  const correspondencias = textos.filter((texto) => normalizar(texto) === normalizar(desejada));
-  if (correspondencias.length === 0) {
-    throw new Error(`${nomeCadastro} "${desejada}" não encontrado. Opções disponíveis: ${textos.join(' | ')}.`);
-  }
-  if (correspondencias.length > 1) {
-    throw new Error(`${nomeCadastro} "${desejada}" corresponde a mais de uma opção: ${correspondencias.join(' | ')}.`);
-  }
-}
-
-async function selecionarOpcaoApoio(
-  page: Page,
-  idSelect: string,
-  desejada: string,
-  nomeCadastro: string,
-): Promise<void> {
-  await exigirOpcaoDeApoio(page, idSelect, desejada, nomeCadastro);
-  await select2.select(page, `#${idSelect}`, desejada, { exactMatch: true, searchText: desejada });
 }
 
 function regexExato(texto: string): RegExp {
@@ -166,25 +118,22 @@ export async function criarTurmaAee(
   sequencia = 1,
   hooks: CriarTurmaAeeHooks = {},
 ): Promise<TurmaAeeCriada> {
-  const dados = buildTurmaAee(options, sequencia);
-  await pesquisarTurmaAee(page, dados.descricao);
-  const preexistente = linhaTurmaAee(page, dados.descricao);
-  if (await preexistente.count() > 0) {
-    throw new Error(`A Turma AEE "${dados.descricao}" já existe. Não será sobrescrita nem removida automaticamente.`);
-  }
+  // A turma criada por uma execução anterior continua no ambiente: usa a primeira sequência com descrição livre.
+  const sequenciaLivre = await proximaSequenciaLivreTurma(page, (n) => buildTurmaAee(options, n).descricao, sequencia);
+  const dados = buildTurmaAee(options, sequenciaLivre);
 
   await navegarParaAdicionarTurmaAee(page);
   const formulario = page.locator('#formCreateTurmaAEE');
 
-  await selecionarOpcaoApoio(page, 'Escola_UnidadeSubordinadoraId', dados.diretoriaRegional, 'Secretaria/Diretoria Regional');
+  await selecionarOpcaoApoio(page, 'Escola_UnidadeSubordinadoraId', dados.diretoriaRegional, 'Secretaria/Diretoria Regional', 'Turma AEE');
   await esperarOpcoesCarregadas(page, 'Escola_Cidade2Id', 'Cidade/Município');
-  await selecionarOpcaoApoio(page, 'Escola_Cidade2Id', dados.municipio, 'Cidade/Município');
+  await selecionarOpcaoApoio(page, 'Escola_Cidade2Id', dados.municipio, 'Cidade/Município', 'Turma AEE');
   await esperarOpcoesCarregadas(page, 'EscolaId', 'Unidade Escolar');
-  await selecionarOpcaoApoio(page, 'EscolaId', dados.unidadeEducacional, 'Unidade Escolar');
+  await selecionarOpcaoApoio(page, 'EscolaId', dados.unidadeEducacional, 'Unidade Escolar', 'Turma AEE');
   await esperarOpcoesCarregadas(page, 'CalendarioEscolarId', 'Calendário Escolar');
-  await selecionarOpcaoApoio(page, 'CalendarioEscolarId', dados.calendarioEscolar, 'Calendário Escolar');
+  await selecionarOpcaoApoio(page, 'CalendarioEscolarId', dados.calendarioEscolar, 'Calendário Escolar', 'Turma AEE');
   await esperarOpcoesCarregadas(page, 'Turno', 'Turno');
-  await selecionarOpcaoApoio(page, 'Turno', dados.turno, 'Turno');
+  await selecionarOpcaoApoio(page, 'Turno', dados.turno, 'Turno', 'Turma AEE');
 
   await formulario.locator('#Descricao').fill(dados.descricao);
   if (dados.horarioEntrada) await formulario.locator('#HorarioEntrada').fill(dados.horarioEntrada);

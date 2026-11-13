@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { buildTurma } from '../../../src/factories';
+import { buildTurma } from '../../../../src/factories';
 
 test.describe('Testes Unitários da Factory de Turma (buildTurma)', () => {
 
