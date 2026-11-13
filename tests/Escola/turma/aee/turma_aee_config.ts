@@ -7,8 +7,8 @@ import {
   type BuildTurmaAeeOptions,
   type DiaAtendimentoTurmaAee,
   type SituacaoDesejadaTurmaAee,
-} from '../../../src/factories/turma-aee.factory';
-import { ATIVIDADES_AEE, type AtividadeAee } from '../../../src/factories/atividade-aee.factory';
+} from '../../../../src/factories/turma-aee.factory';
+import { ATIVIDADES_AEE, type AtividadeAee } from '../../../../src/factories/atividade-aee.factory';
 
 export interface ConfiguracaoCriacaoTurmaAee {
   quantidade: number;
