@@ -1,0 +1,15 @@
+{
+  "quantidade": 1,
+  "nome": "",
+  "eixo": "Outro",
+  "areaAtuacao": "",
+  "descricao": "",
+  "pontuacaoMaxima": 100,
+  "destino": "Unidade Escolar",
+  "calendario": "",
+  "periodicidade": "Mensal",
+  "registraDataDaPauta": true,
+  "permiteCadastroRetroativo": true,
+  "quantidadeAgrupadores": 1,
+  "itensPorAgrupador": 2
+}
