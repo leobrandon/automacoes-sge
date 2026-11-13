@@ -6,9 +6,9 @@ import {
 } from '../../../../src/actions';
 import { loginSge } from '../../../../src/helpers';
 import {
-  linhaTurmaDiversificada,
-  pesquisarTurmaDiversificada,
-} from '../../../../src/helpers/navigation/turma-diversificada.navigation';
+  linhaTurma,
+  pesquisarTurma,
+} from '../../../../src/helpers/navigation/turma.navigation';
 import { lerConfiguracaoCriacaoTurmaDiversificada } from './turma_diversificada_config';
 
 // Modo: REGRESSÃO AUTOMATIZADA. Exclui somente a turma criada pela própria execução (nunca outra QAAUTO).
@@ -39,8 +39,8 @@ test.describe('Exclusão individual de Turma Diversificada', () => {
     } finally {
       if (criada) {
         try {
-          await pesquisarTurmaDiversificada(page, criada.descricao);
-          const quantidade = await linhaTurmaDiversificada(page, criada.descricao).count();
+          await pesquisarTurma(page, criada.descricao);
+          const quantidade = await linhaTurma(page, criada.descricao).count();
           if (quantidade > 1) {
             throw new Error(`Foram encontradas ${quantidade} linhas para "${criada.descricao}"; limpeza interrompida por ambiguidade.`);
           }

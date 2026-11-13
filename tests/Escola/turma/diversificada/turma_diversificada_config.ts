@@ -39,7 +39,7 @@ export function lerConfiguracaoCriacaoTurmaDiversificada(): ConfiguracaoCriacaoT
     diretoriaRegional: textoObrigatorio(config, 'diretoriaRegional'),
     municipio: textoObrigatorio(config, 'municipio'),
     unidadeEducacional: textoObrigatorio(config, 'unidadeEducacional'),
-    anoLetivo: textoOpcional(config, 'anoLetivo'),
+    anoLetivo: textoObrigatorio(config, 'anoLetivo'),
     calendarioEscolar: textoObrigatorio(config, 'calendarioEscolar'),
     composicaoEnsino: textoObrigatorio(config, 'composicaoEnsino'),
     anoEscolar: textoObrigatorio(config, 'anoEscolar'),
