@@ -162,3 +162,8 @@ export * from './criar-turma-diversificada.action';
 export * from './excluir-turma-diversificada.action';
 export * from './criar-turma-alternativa.action';
 export * from './excluir-turma-alternativa.action';
+
+export * from './adicionar-necessidade-especial-aluno.action';
+export * from './alocar-aluno-turma-aee.action';
+export * from './desalocar-aluno-turma-aee.action';
+export * from './excluir-turmas-aee-configuradas.action';
