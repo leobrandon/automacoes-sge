@@ -2,7 +2,9 @@
 
 Testes end-to-end (E2E) com [Playwright](https://playwright.dev/) e TypeScript para o **SGE (Ponto iD)**, executados contra o ambiente de homologação: <https://homologa-sge.pontoid.com.br/>.
 
-Cada cadastro do SGE tem automações de **criar**, **excluir** e **criar + excluir**, cobrindo módulos como Alimentação Escolar, Aluno, Cadastro, Colaborador, Configurações, Conselho Tutelar, Ensino, Escola, Financeiro, Infraestrutura e Transporte Escolar.
+Cada cadastro do SGE tem automações de **criar**, **excluir** e **criar + excluir**, cobrindo módulos como Acompanhamento/Pautas, Alimentação Escolar, Almoxarifado, Aluno, Cadastro, Colaborador, Configurações, Conselho Tutelar, Ensino, Escola, Financeiro, Infraestrutura, Patrimônio e Transporte Escolar.
+
+Além dos cadastros (CRUD), há automações de **fluxos com regra de negócio**, como a modulação de magistério, a alocação de alunos em turmas AEE e o lançamento de frequência no Diário de Classe (veja [Fluxos com regra de negócio](#fluxos-com-regra-de-negócio)).
 
 ## Pré-requisitos
 
@@ -28,6 +30,7 @@ cp .env.example .env
 | --- | --- |
 | `SGE_USUARIO` / `SGE_SENHA` | Credenciais do usuário principal |
 | `SGE_USUARIO_UNIDADE` / `SGE_SENHA_UNIDADE` | Credenciais do usuário de unidade |
+| `SGE_USUARIO_PATRIMONIO` / `SGE_SENHA_PATRIMONIO` | Credenciais do usuário usado nas automações de Patrimônio |
 | `BASE_URL` | URL do ambiente (padrão: homologação) |
 
 O `.env` está no `.gitignore`. **Nunca versione credenciais.** Para ver o navegador durante a execução, defina `HEADLESS=false`.
@@ -57,7 +60,7 @@ src/
   helpers/     # Navegação por menu, datepicker, select2, geradores (CPF, CNPJ, etc.)
   pages/       # Page Objects (ex.: LoginPage)
 tests/         # Specs organizados por menu do SGE e por entidade
-docs/          # Planos e registros de bugs encontrados
+docs/          # Planos, registros de bugs e guia para criar PR (docs/criar-pr-github.md)
 planejamento/  # Planejamentos de automações
 .claude/skills # Skill do Claude Code para criar e manter os testes
 ```
@@ -67,6 +70,20 @@ Cada entidade em `tests/<Menu>/<entidade>/` costuma ter:
 - `criar_<entidade>_action.spec.ts`, `excluir_<entidade>_action.spec.ts` e `criar_e_excluir_<entidade>_action.spec.ts`
 - `dados_<entidade>.json`: dados configuráveis do cadastro
 - `dados_exclusao_<entidade>.json`: critérios para a exclusão
+
+## Fluxos com regra de negócio
+
+Além do CRUD, estas automações exercitam regras do SGE e conferem o resultado na própria tela:
+
+| Fluxo | Onde | O que faz |
+| --- | --- | --- |
+| Modulação de Magistério | `tests/Colaborador/Modulação Escolar/magisterio/` | Modula um professor em turma e componente curricular e exclui a atribuição criada |
+| Turma AEE com alunos | `tests/Escola/turma/aee/` | Cria turma, aloca e desaloca alunos, adiciona necessidade especial e exclui turmas conforme a configuração |
+| Frequência no Diário de Classe | `tests/Escola/turma/frequencia/` | Gera o diário (hoje menos N dias até hoje) e lança presença e falta alternadas entre os alunos nos primeiros dias letivos |
+
+A frequência é configurada em `dados_frequencia_diario_classe.json` (`turma`, `alunos`, `diasAtras`, `quantidadeDias`). A ação é idempotente: células já lançadas são conferidas e não são regravadas. O SGE não permite excluir frequência, então os lançamentos permanecem na turma.
+
+Antes de automatizar um fluxo cuja regra não é conhecida, consulte o manual do dev do SUE, a base de conhecimento e a wiki Ponto iD (ordem de consulta em [`CLAUDE.md`](CLAUDE.md)).
 
 ## Convenções
 
