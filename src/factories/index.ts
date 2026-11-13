@@ -28,3 +28,7 @@ export * from './nota-fiscal.factory';
 export * from './veiculo.factory';
 export * from './local-almoxarifado.factory';
 export * from './depreciacao-patrimonio.factory';
+export * from './area-atuacao.factory';
+export * from './metrica-acompanhamento.factory';
+export * from './tipo-pauta.factory';
+export * from './acompanhamento.factory';

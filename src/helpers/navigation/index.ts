@@ -37,3 +37,7 @@ export * from './nota-fiscal.navigation';
 export * from './veiculo.navigation';
 export * from './local-almoxarifado.navigation';
 export * from './depreciacao-patrimonio.navigation';
+export * from './area-atuacao.navigation';
+export * from './metrica-acompanhamento.navigation';
+export * from './tipo-pauta.navigation';
+export * from './acompanhamento.navigation';
