@@ -3,6 +3,13 @@
 ## Ambientes
 - Quando o usuário pedir para abrir a homologação, abra https://homologa-sge.pontoid.com.br/ (navegador integrado).
 
+## Regras de negócio
+- Antes de automatizar um fluxo cuja regra de negócio você não conhece (validações, limites, dependências entre cadastros, mensagens de recusa), consulte as fontes abaixo, nesta ordem, em vez de deduzir pela tela:
+  1. Manual do dev do SUE (http://192.168.88.109:8081/): use as tools `mcp__sue-regras-negocio__*` (`buscar_documentacao`, `ler_documento`). É a fonte mais precisa e cita as regras por ID (ex.: MOD-MAG-004).
+  2. Base de conhecimento local: `E:\Projetos Agentes IA\Projeto Ponto iD\base_de_conhecimento` (playbooks e manuais por módulo; use Grep/Glob pelo assunto).
+  3. Wiki Ponto iD (releases, perguntas frequentes, guias e manuais): https://wiki.pontoid.com.br/
+- Use as regras para definir o que a automação deve provar (aceites e recusas, com a mensagem exata do SGE). Se a documentação divergir da UI real, vale a UI: documente a divergência no relato final em vez de ajustar o esperado.
+
 ## Geração e manutenção de automações
 - Para criar, corrigir, estabilizar ou investigar testes Playwright/E2E, use a skill `playwright-e2e-engineer` (`.claude/skills/playwright-e2e-engineer/SKILL.md`) e os recursos relacionados dela.
 - Identifique o cenário e siga os requisitos de preflight, exploração da UI, implementação e validação descritos pela skill.
