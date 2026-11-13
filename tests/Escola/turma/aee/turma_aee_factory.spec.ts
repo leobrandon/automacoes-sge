@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { buildTurmaAee, type BuildTurmaAeeOptions } from '../../../src/factories/turma-aee.factory';
+import { buildTurmaAee, type BuildTurmaAeeOptions } from '../../../../src/factories/turma-aee.factory';
 
 const dadosBase: BuildTurmaAeeOptions = {
   diretoriaRegional: 'DRE BRANDAO',

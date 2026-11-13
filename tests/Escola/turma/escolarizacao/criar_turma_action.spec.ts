@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { test, expect } from '@playwright/test';
-import { loginSge } from '../../../src/helpers';
-import { criarTurmaEscolarizacao } from '../../../src/actions';
-import { buildTurma } from '../../../src/factories';
+import { loginSge } from '../../../../src/helpers';
+import { criarTurmaEscolarizacao } from '../../../../src/actions';
+import { buildTurma } from '../../../../src/factories';
 
 /**
  * Validação da Action Reutilizável: criarTurmaEscolarizacao()

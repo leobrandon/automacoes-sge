@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { loginSge, navegarParaAdicionarTurma, waitForSgeLoaders } from '../../../src/helpers';
-import { fecharModalSalvarTurma } from '../../../src/actions';
+import { loginSge, navegarParaAdicionarTurma, waitForSgeLoaders } from '../../../../src/helpers';
+import { fecharModalSalvarTurma } from '../../../../src/actions';
 
 /**
  * Validação Comportamental do Modal de Salvamento de Turma:

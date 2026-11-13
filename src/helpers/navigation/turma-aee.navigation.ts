@@ -1,9 +1,13 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { getByRoleSge } from '../sge-locators.helper';
 import { waitForSgeLoaders } from './common.navigation';
-import { navegarParaAdicionarTurma, navegarParaConsultaTurmas } from './turma.navigation';
-
-const ROTA_CONSULTA = /\/turma\/index(?:grid)?$/i;
+import {
+  celulaDescricaoTurma,
+  linhaTurma,
+  navegarParaAdicionarTurma,
+  navegarParaConsultaTurmas,
+  pesquisarTurma,
+} from './turma.navigation';
 
 function main(page: Page): Locator {
   return page.locator('#main');
@@ -24,36 +28,13 @@ export async function navegarParaAdicionarTurmaAee(page: Page): Promise<void> {
 }
 
 export async function pesquisarTurmaAee(page: Page, termo: string): Promise<void> {
-  const busca = main(page).locator('#searchTerm');
-  const pesquisar = main(page).locator('#btnSubmitSearch');
-  await navegarParaConsultaTurmaAee(page);
-  await busca.fill(termo);
-
-  const [resposta] = await Promise.all([
-    page.waitForResponse((response) => {
-      const url = new URL(response.url());
-      return ROTA_CONSULTA.test(url.pathname)
-        && url.searchParams.get('searchTerm') === termo
-        && response.request().method() === 'GET';
-    }, { timeout: 20000 }),
-    pesquisar.click(),
-  ]);
-
-  if (!resposta.ok()) throw new Error(`A consulta de Turmas AEE retornou HTTP ${resposta.status()}.`);
-  await waitForSgeLoaders(page);
-  await expect(main(page).locator('table')).toBeVisible();
+  await pesquisarTurma(page, termo);
 }
 
 export function linhaTurmaAee(page: Page, descricao: string): Locator {
-  const descricaoExata = new RegExp(`^\\s*${escapeRegex(descricao.trim())}\\s*$`, 'i');
-  const textoDescricao = page.getByText(descricaoExata).filter({ visible: true });
-  return main(page).locator('table tbody tr:visible').filter({ has: textoDescricao });
+  return linhaTurma(page, descricao);
 }
 
 export function celulaDescricaoTurmaAee(linha: Locator, descricao: string): Locator {
-  return linha.getByText(new RegExp(`^\\s*${escapeRegex(descricao.trim())}\\s*$`, 'i')).filter({ visible: true });
-}
-
-function escapeRegex(texto: string): string {
-  return texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return celulaDescricaoTurma(linha, descricao);
 }

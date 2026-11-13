@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
-import { criarTurmaAee } from '../../../src/actions';
-import { loginSge } from '../../../src/helpers';
-import { linhaTurmaAee } from '../../../src/helpers/navigation/turma-aee.navigation';
+import { criarTurmaAee } from '../../../../src/actions';
+import { loginSge } from '../../../../src/helpers';
+import { linhaTurmaAee } from '../../../../src/helpers/navigation/turma-aee.navigation';
 import { lerConfiguracaoCriacaoTurmaAee } from './turma_aee_config';
 
 const BASE_URL = process.env.BASE_URL || 'https://homologa-sge.pontoid.com.br';
@@ -19,7 +19,8 @@ test.describe('Escola > Turma > AEE', () => {
       };
       const turma = await criarTurmaAee(page, dados, sequencia);
       expect(turma.descricao).toMatch(/^QAAUTO\b/i);
-      expect(turma.descricao).toMatch(new RegExp(` ${sequencia}$`));
+      // Turmas de execuções anteriores continuam no ambiente: a sequência avança até achar uma descrição livre.
+      expect(Number(/ (\d+)$/.exec(turma.descricao)?.[1])).toBeGreaterThanOrEqual(sequencia);
       expect(turma.horarioEntradaPersistido).toMatch(/^\d{2}:\d{2}$/);
       expect(turma.horarioSaidaPersistido).toMatch(/^\d{2}:\d{2}$/);
       expect(new URL(turma.url).origin).toBe(new URL(BASE_URL).origin);
