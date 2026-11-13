@@ -1,0 +1,25 @@
+{
+  "quantidadeAlunos": 1,
+  "turma": {
+    "descricao": "QAAUTO Turma AEE Integrada",
+    "diretoriaRegional": "DRE BRANDAO",
+    "municipio": "GOIÂNIA",
+    "unidadeEducacional": "ESCOLA ESTADUAL DAS OLIVEIRAS - 52164801",
+    "escolaNaConsulta": "ESCOLA ESTADUAL DAS OLIVEIRAS",
+    "calendarioEscolar": "Calendário Escolar 2026 - Ensino Fundamental",
+    "turno": "Matutino/Manhã",
+    "diasDeAtendimento": ["Segunda"],
+    "atividadesAee": ["Desenvolvimento de funções cognitivas"],
+    "situacaoDesejada": "Ativo"
+  },
+  "aluno": {
+    "escola": "ESCOLA MUNICIPAL CULTURA",
+    "serie": "4º ANO",
+    "turno": "Matutino/Manhã",
+    "necessidadeEspecial": "Altas Habilidades/Superdotação",
+    "recebeProfissional": "Não",
+    "atendimentoExclusivo": "Não",
+    "diasComparecimento": ["SEG"],
+    "atividades": ["Desenvolvimento de funções cognitivas"]
+  }
+}
