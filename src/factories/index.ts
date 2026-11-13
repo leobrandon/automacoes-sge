@@ -34,3 +34,4 @@ export * from './tipo-pauta.factory';
 export * from './acompanhamento.factory';
 export * from './turma-aee.factory';
 export * from './turma-diversificada.factory';
+export * from './turma-alternativa.factory';

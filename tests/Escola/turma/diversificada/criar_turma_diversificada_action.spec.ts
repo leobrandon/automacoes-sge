@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { criarTurmaDiversificada } from '../../../../src/actions';
 import { loginSge } from '../../../../src/helpers';
-import { linhaTurmaDiversificada } from '../../../../src/helpers/navigation/turma-diversificada.navigation';
+import { linhaTurma } from '../../../../src/helpers/navigation/turma.navigation';
 import { lerConfiguracaoCriacaoTurmaDiversificada } from './turma_diversificada_config';
 
 // Modo: REGRESSÃO AUTOMATIZADA. Cria e mantém as turmas para conferência (a exclusão é outra spec).
@@ -25,7 +25,7 @@ test.describe('Escola > Turma > Diversificada', () => {
       expect(turma.horarioEntradaPersistido).toMatch(/^\d{2}:\d{2}$/);
       expect(turma.horarioSaidaPersistido).toMatch(/^\d{2}:\d{2}$/);
       expect(new URL(turma.url).origin).toBe(new URL(BASE_URL).origin);
-      await expect(linhaTurmaDiversificada(page, turma.descricao)).toHaveCount(1);
+      await expect(linhaTurma(page, turma.descricao)).toHaveCount(1);
     }
   });
 });

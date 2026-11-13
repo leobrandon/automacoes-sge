@@ -6,9 +6,9 @@ import {
 } from '../../../../src/actions';
 import { loginSge } from '../../../../src/helpers';
 import {
-  linhaTurmaDiversificada,
-  pesquisarTurmaDiversificada,
-} from '../../../../src/helpers/navigation/turma-diversificada.navigation';
+  linhaTurma,
+  pesquisarTurma,
+} from '../../../../src/helpers/navigation/turma.navigation';
 import { lerConfiguracaoCriacaoTurmaDiversificada } from './turma_diversificada_config';
 
 // Modo: REGRESSÃO AUTOMATIZADA. Ciclo completo: cria a quantidade configurada e exclui só o que esta execução criou.
@@ -32,15 +32,15 @@ test.describe('Ciclo completo de Turma Diversificada', () => {
         const turma = await criarTurmaDiversificada(page, dados, sequencia, {
           onPersistida: (candidata) => candidatas.push(candidata),
         });
-        await expect(linhaTurmaDiversificada(page, turma.descricao)).toHaveCount(1);
+        await expect(linhaTurma(page, turma.descricao)).toHaveCount(1);
       }
     } catch (erro) {
       erroPrincipal = erro instanceof Error ? erro : new Error(String(erro));
     } finally {
       for (const candidata of [...candidatas].reverse()) {
         try {
-          await pesquisarTurmaDiversificada(page, candidata.descricao);
-          const quantidade = await linhaTurmaDiversificada(page, candidata.descricao).count();
+          await pesquisarTurma(page, candidata.descricao);
+          const quantidade = await linhaTurma(page, candidata.descricao).count();
           if (quantidade === 0) continue;
           if (quantidade !== 1) {
             throw new Error(`A consulta retornou ${quantidade} linhas para "${candidata.descricao}"; limpeza interrompida por ambiguidade.`);
