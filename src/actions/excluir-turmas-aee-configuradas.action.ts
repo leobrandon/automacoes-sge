@@ -103,9 +103,26 @@ export async function excluirTurmasAeeConfiguradas(page: Page, config: Configura
     await abrirAlvo(page, alvo);
     const form = page.locator('#formEditarTurmaAEE');
     await getByRoleSge(form, 'link', { name: 'Alunos na Turma', exact: true }).click();
-    if (!await form.getByText('<Não possui alunos alocados>', { exact: true }).isVisible()) {
-      resultado.impedidas.push({ ...alvo, motivo: 'A turma apresenta alunos associados ou a lista não está vazia.' });
-      console.log(`Não excluída: ${alvo.descricao} | alunos associados ou lista não vazia.`);
+    const aba = form.locator('#tabAlunosNaTurma');
+    await expect(aba).toBeVisible();
+    const grade = aba.locator('#gridListaDeAlunoTurmaAEE');
+    await expect(grade).toBeVisible();
+    const somenteCursando = aba.locator('#MostrarApenasAlunosComStatusCursando');
+    if (await somenteCursando.isChecked()) {
+      // A lista é substituída ao desativar o filtro; aguarda a nova tabela antes de ler os vínculos.
+      await grade.evaluate(el => el.setAttribute('data-lista-anterior', 'true'));
+      await aba.locator('.toggle').click();
+      await expect(somenteCursando).not.toBeChecked();
+      await expect(aba.locator('#gridListaDeAlunoTurmaAEE:not([data-lista-anterior])')).toBeVisible({ timeout: 20000 });
+    }
+    const listaCompleta = aba.locator('#gridListaDeAlunoTurmaAEE');
+    await expect(listaCompleta.locator('tbody tr')).not.toHaveCount(0);
+    const vazia = listaCompleta.getByText('<Não possui alunos alocados>', { exact: true });
+    if (!await vazia.isVisible()) {
+      const registros = (await listaCompleta.locator('tbody tr').allInnerTexts()).map(t => t.replace(/\s+/g, ' ').trim()).filter(Boolean);
+      const motivo = `A lista completa contém ${registros.length} vínculo(s), inclusive eventuais históricos.`;
+      resultado.impedidas.push({ ...alvo, motivo });
+      console.log(`Não excluída: ${alvo.descricao} | ${motivo}`);
       continue;
     }
     await getByRoleSge(form, 'button', { name: /Excluir/i }).click();
