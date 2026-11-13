@@ -155,4 +155,6 @@ export * from './excluir-metrica-acompanhamento.action';
 export * from './criar-tipo-pauta.action';
 export * from './excluir-tipo-pauta.action';
 export * from './criar-acompanhamento.action';
+export * from './criar-turma-aee.action';
+export * from './excluir-turma-aee.action';
 export * from './concluir-acompanhamento.action';

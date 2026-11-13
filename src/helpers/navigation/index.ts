@@ -41,3 +41,4 @@ export * from './area-atuacao.navigation';
 export * from './metrica-acompanhamento.navigation';
 export * from './tipo-pauta.navigation';
 export * from './acompanhamento.navigation';
+export * from './turma-aee.navigation';

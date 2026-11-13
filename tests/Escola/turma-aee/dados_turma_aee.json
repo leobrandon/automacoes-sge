@@ -1,0 +1,14 @@
+{
+  "quantidade": 1,
+  "diretoriaRegional": "DRE BRANDAO",
+  "municipio": "GOIÂNIA",
+  "unidadeEducacional": "ESCOLA ESTADUAL DAS OLIVEIRAS - 52164801",
+  "calendarioEscolar": "Calendário Escolar 2026 - Ensino Fundamental",
+  "descricao": "",
+  "turno": "Matutino/Manhã",
+  "horarioEntrada": "",
+  "horarioSaida": "",
+  "diasDeAtendimento": ["Segunda"],
+  "atividadesAee": ["Desenvolvimento de funções cognitivas"],
+  "situacaoDesejada": "Ativo"
+}
