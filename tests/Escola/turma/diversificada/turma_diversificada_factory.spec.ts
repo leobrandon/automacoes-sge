@@ -7,6 +7,7 @@ import {
 const dadosBase: BuildTurmaDiversificadaOptions = {
   diretoriaRegional: 'DRE BRANDAO',
   municipio: 'GOIÂNIA',
+  anoLetivo: '2026',
   unidadeEducacional: 'ESCOLA MUNICIPAL CULTURA - 52315',
   calendarioEscolar: 'Calendário Escolar 2026 - Ensino Fundamental',
   composicaoEnsino: 'COMPOSIÇÃO DE ENSINO ANOS INICIAIS - Parcial',

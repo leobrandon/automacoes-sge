@@ -158,19 +158,30 @@ const LIMITE_BUSCA_SEQUENCIA_TURMA = 200;
 /**
  * Menor sequência >= `inicio` cuja descrição ainda não existe na consulta. As turmas criadas por execuções
  * anteriores ficam no ambiente, então a descrição (que o SGE não deixa repetir) define a próxima sequência.
+ *
+ * Uma única pesquisa pelo prefixo lista as sequências já usadas e dá a candidata; a consulta exata de cada
+ * candidata continua sendo a confirmação (a grade pode não listar tudo), então o custo não cresce com o resíduo.
  */
 export async function proximaSequenciaLivreTurma(
   page: Page,
   descricaoDaSequencia: (sequencia: number) => string,
   inicio = 1,
 ): Promise<number> {
-  for (let sequencia = inicio; sequencia < inicio + LIMITE_BUSCA_SEQUENCIA_TURMA; sequencia++) {
+  const prefixo = descricaoDaSequencia(inicio).replace(/\s*\d+$/, '');
+  const padrao = new RegExp(`^\\s*${escaparRegexTurma(prefixo)}\\s+(\\d+)\\s*$`, 'i');
+  await pesquisarTurma(page, prefixo);
+  const textos = await page.locator('#main table tbody tr:visible').getByText(padrao).filter({ visible: true }).allInnerTexts();
+  const usadas = new Set(textos.map((texto) => Number(padrao.exec(texto)?.[1])));
+  let candidata = inicio;
+  while (usadas.has(candidata)) candidata++;
+
+  for (let sequencia = candidata; sequencia < candidata + LIMITE_BUSCA_SEQUENCIA_TURMA; sequencia++) {
     const descricao = descricaoDaSequencia(sequencia);
     await pesquisarTurma(page, descricao);
     if (await linhaTurma(page, descricao).count() === 0) return sequencia;
   }
   throw new Error(
-    `Nenhuma sequência livre nas ${LIMITE_BUSCA_SEQUENCIA_TURMA} tentativas a partir de ${inicio}. `
+    `Nenhuma sequência livre nas ${LIMITE_BUSCA_SEQUENCIA_TURMA} tentativas a partir de ${candidata}. `
     + 'Exclua as turmas QAAUTO criadas por execuções anteriores.',
   );
 }
