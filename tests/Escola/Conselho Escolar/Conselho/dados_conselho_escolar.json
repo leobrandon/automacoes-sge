@@ -3,7 +3,7 @@
   "vigencias": [
     {
       "dataInicio": "01/01/2026",
-      "dataFim": "30/06/2026",
+      "dataFim": "31/03/2026",
       "membros": [
         { "tipo": "Comunidade", "funcao": "Função teste", "pessoa": "" }
       ],
@@ -12,7 +12,7 @@
       ]
     },
     {
-      "dataInicio": "01/07/2026",
+      "dataInicio": "01/12/2026",
       "dataFim": "31/12/2026",
       "membros": [
         { "tipo": "Colaborador", "funcao": "Função teste", "pessoa": "" }

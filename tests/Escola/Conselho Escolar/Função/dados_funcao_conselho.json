@@ -1,0 +1,7 @@
+{
+  "quantidade": "",
+  "descricao": "",
+  "tipos": ["Aluno", "Comunidade"],
+  "idadeMinima": "18",
+  "ativo": "Sim"
+}
