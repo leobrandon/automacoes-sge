@@ -171,3 +171,5 @@ export * from './excluir-turma-alternativa.action';
 export * from './lancar-frequencia-diario-classe.action';
 export * from './manutencao-matricula-turma.action';
 export * from './remanejamento-interno.action';
+export * from './criar-conselho-escolar.action';
+export * from './excluir-conselho-escolar.action';
