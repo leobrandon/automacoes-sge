@@ -1,0 +1,7 @@
+{
+  "escola": "ESCOLA MUNICIPAL CULTURA",
+  "vigencias": [
+    { "dataInicio": "01/07/2026", "dataFim": "31/12/2026" },
+    { "dataInicio": "01/01/2026", "dataFim": "30/06/2026" }
+  ]
+}
