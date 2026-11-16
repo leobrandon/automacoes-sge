@@ -46,6 +46,7 @@ export * from './turma-aee.navigation';
 export * from './turma-diversificada.navigation';
 export * from './turma-alternativa.navigation';
 export * from './diario-classe.navigation';
+export * from './conteudo-aplicado.navigation';
 export * from './manutencao-matricula-turma.navigation';
 export * from './remanejamento-interno.navigation';
 export * from './conselho-escolar.navigation';
