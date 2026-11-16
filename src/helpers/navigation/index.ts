@@ -49,3 +49,4 @@ export * from './diario-classe.navigation';
 export * from './manutencao-matricula-turma.navigation';
 export * from './remanejamento-interno.navigation';
 export * from './conselho-escolar.navigation';
+export * from './funcao-conselho.navigation';
