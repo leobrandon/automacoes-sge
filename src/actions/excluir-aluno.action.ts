@@ -390,7 +390,10 @@ export async function excluirAluno(
     // Clicar no label correspondente para disparar os gatilhos visuais e de árvore
     const labelCheckbox = page.locator('label:has(input.exclusao-aluno)').first();
     if (await labelCheckbox.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await labelCheckbox.click();
+      // O clique de Playwright às vezes espera indefinidamente por estabilidade do label; limita e usa o checkbox direto.
+      await labelCheckbox.click({ timeout: 8000 }).catch(async () => {
+        await checkboxAluno.check({ force: true });
+      });
     } else {
       await checkboxAluno.check({ force: true });
     }
