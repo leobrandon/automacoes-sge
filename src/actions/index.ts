@@ -169,3 +169,4 @@ export * from './excluir-turma-diversificada.action';
 export * from './criar-turma-alternativa.action';
 export * from './excluir-turma-alternativa.action';
 export * from './lancar-frequencia-diario-classe.action';
+export * from './remanejamento-interno.action';
