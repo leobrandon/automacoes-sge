@@ -46,3 +46,4 @@ export * from './turma-aee.navigation';
 export * from './turma-diversificada.navigation';
 export * from './turma-alternativa.navigation';
 export * from './diario-classe.navigation';
+export * from './remanejamento-interno.navigation';

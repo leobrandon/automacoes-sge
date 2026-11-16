@@ -18,4 +18,5 @@
 - Navegue no SGE apenas por menus, botões e controles visíveis; não force rotas internas nem simule chamadas de API.
 - Execute Playwright com `workers: 1` para evitar concorrência de sessão.
 - Use o prefixo `QAAUTO` nos dados criados pela automação e exclua somente registros criados pela própria execução, salvo configuração explícita e restrita à busca QAAUTO.
+- Organize `tests/` espelhando o caminho do menu do SGE, com o rótulo do menu como nome de pasta (ex.: Aluno > Manutenção Matrícula > Remanejamento Interno = `tests/Aluno/Manutenção Matrícula/Remanejamento Interno/`). Vale para toda automação nova; ao mexer numa existente fora desse padrão, mova-a.
 - Mantenha dados configuráveis em `dados_<entidade>.json`; não grave credenciais em arquivos versionados.
