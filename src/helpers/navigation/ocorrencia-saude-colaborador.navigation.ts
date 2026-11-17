@@ -1,7 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 import { getByRoleSge } from '../sge-locators.helper';
 
-export async function abrirFormularioOcorrenciaSaudeColaborador(page: Page): Promise<void> {
+export async function abrirConsultaOcorrenciaSaudeColaborador(page: Page): Promise<void> {
   const nav = page.locator('nav');
   const ocorrencias = nav.getByRole('link', { name: 'Ocorrências de Saúde', exact: true });
   if (!await ocorrencias.isVisible()) {
@@ -12,14 +12,26 @@ export async function abrirFormularioOcorrenciaSaudeColaborador(page: Page): Pro
 
   const main = page.locator('#main');
   await expect(getByRoleSge(main, 'heading', { name: /Consulta de Ocorrências de Saúde de\s+Colaboradores/ })).toBeVisible();
+}
+
+export async function abrirFormularioOcorrenciaSaudeColaborador(page: Page): Promise<void> {
+  await abrirConsultaOcorrenciaSaudeColaborador(page);
+  const main = page.locator('#main');
   const adicionar = getByRoleSge(main, 'button', { name: /Adicionar/ });
   await expect(adicionar).toBeVisible();
   await adicionar.click();
   await expect(getByRoleSge(main, 'heading', { name: /Adicionar Ocorrência de Saúde de Colaborador/ })).toBeVisible();
 }
 
+export function localizarSucessoOcorrenciaSaude(page: Page) {
+  return page.getByRole('dialog').filter({
+    visible: true,
+    has: page.getByRole('heading', { name: 'Sucesso!', exact: true }),
+  });
+}
+
 export async function confirmarSucessoOcorrenciaSaude(page: Page, mensagem: string): Promise<void> {
-  const dialogo = page.getByRole('dialog');
+  const dialogo = localizarSucessoOcorrenciaSaude(page);
   await expect(dialogo).toBeVisible();
   await expect(dialogo).toContainText(mensagem);
   await dialogo.getByRole('button', { name: 'Ok', exact: true }).click();

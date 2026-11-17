@@ -9,22 +9,24 @@ test('cria uma ocorrência de saúde em rascunho e cancela somente o registro cr
   await loginSge(page, { baseUrl: process.env.BASE_URL });
 
   let idCriado: string | undefined;
-  const falhas: unknown[] = [];
+  let criacaoConcluida = false;
   try {
     await test.step('Cadastrar e conferir o rascunho', () => criarOcorrenciaSaudeColaborador(page, dados, (id) => {
       idCriado = id;
     }));
-  } catch (erro) {
-    falhas.push(erro);
+    criacaoConcluida = true;
   } finally {
     if (idCriado !== undefined) {
       const id = idCriado;
       try {
         await test.step(`Cancelar a ocorrência ${id}`, () => cancelarOcorrenciaSaudeColaborador(page, id, dados.motivoCancelamento));
       } catch (erro) {
-        falhas.push(erro);
+        if (criacaoConcluida) throw erro;
+        await test.info().attach('Falha ao cancelar o rascunho', {
+          body: erro instanceof Error ? (erro.stack ?? erro.message) : String(erro),
+          contentType: 'text/plain',
+        });
       }
     }
   }
-  if (falhas.length) throw new AggregateError(falhas, 'Falha no ciclo de ocorrência de saúde do colaborador.');
 });

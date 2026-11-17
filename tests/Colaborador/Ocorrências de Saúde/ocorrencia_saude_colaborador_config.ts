@@ -17,3 +17,16 @@ export function lerConfiguracaoOcorrenciaSaudeColaborador() {
     motivoCancelamento: textoOpcional(config, 'motivoCancelamento'),
   });
 }
+
+export function lerConfiguracaoCancelamentoOcorrenciaSaudeColaborador() {
+  const config = lerJsonObjeto(path.join(__dirname, 'dados_cancelamento_ocorrencia_saude_colaborador.json'));
+  const idOcorrencia = textoOpcional(config, 'idOcorrencia');
+  const dataInicio = textoOpcional(config, 'dataInicio');
+  if (!idOcorrencia || !dataInicio) {
+    throw new Error('Preencha "idOcorrencia" e "dataInicio" com a saída da spec de criação isolada.');
+  }
+  return {
+    ...buildOcorrenciaSaudeColaborador({ ...lerConfiguracaoOcorrenciaSaudeColaborador(), dataInicio }),
+    idOcorrencia,
+  };
+}

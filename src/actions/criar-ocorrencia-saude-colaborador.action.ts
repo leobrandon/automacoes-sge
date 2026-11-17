@@ -1,29 +1,17 @@
 import { expect, type Page } from '@playwright/test';
-import type { OpcoesOcorrenciaSaudeColaborador } from '../factories/ocorrencia-saude-colaborador.factory';
+import {
+  COLABORADOR_OCORRENCIA_QAAUTO,
+  type OpcoesOcorrenciaSaudeColaborador,
+} from '../factories/ocorrencia-saude-colaborador.factory';
 import { datepicker } from '../helpers/datepicker.helper';
+import { select2 } from '../helpers/select2.helper';
 import { getByRoleSge } from '../helpers/sge-locators.helper';
 import {
   abrirFormularioOcorrenciaSaudeColaborador,
-  confirmarSucessoOcorrenciaSaude,
+  localizarSucessoOcorrenciaSaude,
 } from '../helpers/navigation/ocorrencia-saude-colaborador.navigation';
 
 type DadosOcorrencia = Required<OpcoesOcorrenciaSaudeColaborador>;
-
-async function selecionarOpcao(page: Page, campo: 'EscolaId' | 'JustificativaId', texto: string): Promise<void> {
-  const seletor = page.locator(`#main #s2id_${campo}`);
-  await seletor.locator('a.select2-choice').click();
-  const lista = page.locator('.select2-drop-active:visible');
-  await expect(lista).toBeVisible();
-  const opcoes = lista.locator('.select2-result-label');
-  const opcao = lista.getByText(texto, { exact: true });
-  if (await opcao.count() !== 1) {
-    const disponiveis = (await opcoes.allTextContents()).map((item) => item.trim()).filter(Boolean);
-    throw new Error(`Seleção inválida em ${campo}: "${texto}". Opções exibidas: ${disponiveis.join(' | ') || 'nenhuma'}.`);
-  }
-  await opcao.click();
-  await expect(lista).toBeHidden();
-  await expect(seletor.locator('.select2-chosen')).toHaveText(texto);
-}
 
 async function selecionarColaborador(page: Page, nome: string): Promise<void> {
   const seletor = page.locator('#main #s2id_PessoaId');
@@ -53,11 +41,12 @@ export async function criarOcorrenciaSaudeColaborador(
   dados: DadosOcorrencia,
   registrarCriacao: (id: string) => void,
 ): Promise<void> {
-  if (!/\bQAAUTO\b/i.test(dados.colaborador)) throw new Error('Use somente um colaborador de teste QAAUTO.');
+  if (!COLABORADOR_OCORRENCIA_QAAUTO.test(dados.colaborador)) throw new Error('Use somente um colaborador de teste QAAUTO.');
   await abrirFormularioOcorrenciaSaudeColaborador(page);
-  await selecionarOpcao(page, 'EscolaId', dados.escola);
+  const opcoesSelect2 = { exactMatch: true, requireUniqueMatch: true, searchText: '' };
+  await select2.select(page, '#EscolaId', dados.escola, opcoesSelect2);
   await selecionarColaborador(page, dados.colaborador);
-  await selecionarOpcao(page, 'JustificativaId', dados.justificativa);
+  await select2.select(page, '#JustificativaId', dados.justificativa, opcoesSelect2);
 
   const main = page.locator('#main');
   const dias = main.locator('#TotalDeDiasDeAtestado');
@@ -81,15 +70,27 @@ export async function criarOcorrenciaSaudeColaborador(
   const dataFim = await campoFim.inputValue();
 
   const salvar = getByRoleSge(main, 'button', { name: /Salvar/ });
+  const situacao = main.locator('#SituacaoDescricao:visible');
+  const sucesso = localizarSucessoOcorrenciaSaude(page);
   await expect(salvar).toBeVisible();
   await salvar.click();
-  await confirmarSucessoOcorrenciaSaude(page, 'A ocorrência de saúde foi cadastrada.');
 
+  await expect(sucesso.or(situacao).first(), 'Aguarde o retorno do cadastro da ocorrência.').toBeVisible();
+  let feedback: string | undefined;
+  if (await sucesso.isVisible()) {
+    feedback = await sucesso.innerText();
+    await sucesso.getByRole('button', { name: 'Ok', exact: true }).click();
+  }
+
+  // O campo de situação existe na edição. Registre o ID antes das conferências.
+  await expect(situacao).toBeVisible();
+  const idEmEdicao = main.locator('form input[type="hidden"]#Id');
+  await expect(idEmEdicao).toHaveValue(/\S/);
+  registrarCriacao(await idEmEdicao.inputValue());
+
+  expect(feedback ?? '', 'Mensagem de sucesso do cadastro').toContain('A ocorrência de saúde foi cadastrada.');
   await expect(getByRoleSge(main, 'heading', { name: /Editar Ocorrência de Saúde de Colaborador/ })).toBeVisible();
-  const id = main.locator('form input[type="hidden"]#Id');
-  await expect(id).toHaveValue(/\S/);
-  registrarCriacao(await id.inputValue());
-  await expect(main.locator('#SituacaoDescricao')).toHaveValue('Rascunho');
+  await expect(situacao).toHaveValue('Rascunho');
   await expect(main.locator('#PessoaNome')).toHaveValue(dados.colaborador);
   await expect(main.locator('#s2id_JustificativaId .select2-chosen')).toHaveText(dados.justificativa);
   await expect(main.locator('#DataInicio')).toHaveValue(dados.dataInicio);
