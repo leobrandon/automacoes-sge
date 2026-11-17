@@ -51,3 +51,4 @@ export * from './manutencao-matricula-turma.navigation';
 export * from './remanejamento-interno.navigation';
 export * from './conselho-escolar.navigation';
 export * from './funcao-conselho.navigation';
+export * from './planejamento-escola.navigation';
