@@ -42,6 +42,16 @@ export async function entrarNaUnidadeEscolar(page: Page, escola: string): Promis
     .toHaveCount(1, { timeout: 20000 });
   await linha.getByTitle('Autenticar Unidade').click();
 
+  // O SGE recusa a autenticação com um aviso (ex.: falta o Grupo de Permissão padrão do perfil
+  // Administrador da Escola no tenant); falha na hora com a mensagem dele em vez de esperar o cabeçalho.
+  const recusa = page.getByRole('dialog').filter({ hasText: 'Atenção!' }).first();
+  await expect
+    .poll(async () => (await unidadeNoTopo.isVisible()) || (await recusa.isVisible()), { timeout: 30000 })
+    .toBe(true);
+  if (await recusa.isVisible()) {
+    const motivo = ((await recusa.innerText()) ?? '').replace(/\s+/g, ' ').trim();
+    throw new Error(`O SGE recusou autenticar a unidade "${escola}": ${motivo}`);
+  }
   await expect(unidadeNoTopo).toBeVisible({ timeout: 30000 });
   await expect(unidadeLogada).toHaveText(escola);
   await aguardarCarregamentoConselho(page);
