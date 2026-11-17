@@ -72,10 +72,17 @@ export async function criarOcorrenciaSaudeColaborador(
   const salvar = getByRoleSge(main, 'button', { name: /Salvar/ });
   const situacao = main.locator('#SituacaoDescricao:visible');
   const sucesso = localizarSucessoOcorrenciaSaude(page);
+  const alerta = page.getByRole('dialog').filter({
+    visible: true,
+    has: page.getByRole('heading', { name: 'Atenção!', exact: true }),
+  });
   await expect(salvar).toBeVisible();
   await salvar.click();
 
-  await expect(sucesso.or(situacao).first(), 'Aguarde o retorno do cadastro da ocorrência.').toBeVisible();
+  await expect(sucesso.or(situacao).or(alerta).first(), 'Aguarde o retorno do cadastro da ocorrência.').toBeVisible();
+  if (await alerta.isVisible()) {
+    throw new Error(`O SGE recusou o cadastro da ocorrência: ${(await alerta.innerText()).replace(/\s+/g, ' ').trim()}`);
+  }
   let feedback: string | undefined;
   if (await sucesso.isVisible()) {
     feedback = await sucesso.innerText();

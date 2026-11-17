@@ -2,6 +2,9 @@ import { expect, type Page } from '@playwright/test';
 import { getByRoleSge } from '../sge-locators.helper';
 
 export async function abrirConsultaOcorrenciaSaudeColaborador(page: Page): Promise<void> {
+  const consulta = getByRoleSge(page.locator('#main'), 'heading', { name: /Consulta de Ocorrências de Saúde de\s+Colaboradores/ });
+  if (await consulta.isVisible()) return;
+
   const nav = page.locator('nav');
   const ocorrencias = nav.getByRole('link', { name: 'Ocorrências de Saúde', exact: true });
   if (!await ocorrencias.isVisible()) {
@@ -10,8 +13,7 @@ export async function abrirConsultaOcorrenciaSaudeColaborador(page: Page): Promi
   await expect(ocorrencias).toBeVisible();
   await ocorrencias.click();
 
-  const main = page.locator('#main');
-  await expect(getByRoleSge(main, 'heading', { name: /Consulta de Ocorrências de Saúde de\s+Colaboradores/ })).toBeVisible();
+  await expect(consulta).toBeVisible();
 }
 
 export async function abrirFormularioOcorrenciaSaudeColaborador(page: Page): Promise<void> {
