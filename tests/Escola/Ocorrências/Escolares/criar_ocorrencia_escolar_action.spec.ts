@@ -1,8 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { criarOcorrenciaEscolar } from '../../../../src/actions';
-import { loginSge } from '../../../../src/helpers';
-import { entrarNaUnidadeEscolar } from '../../../../src/helpers/navigation/conselho-escolar.navigation';
-import { linhaOcorrencia, navegarParaOcorrenciaEscolar } from '../../../../src/helpers/navigation/ocorrencia-escolar.navigation';
+import { linhaOcorrencia, loginNaUnidadeEscolar, navegarParaOcorrenciaEscolar } from '../../../../src/helpers/navigation/ocorrencia-escolar.navigation';
 import { lerConfiguracaoCriacaoOcorrenciaEscolar } from './ocorrencia_escolar_config';
 
 // Modo: REGRESSÃO AUTOMATIZADA. As ocorrências criadas permanecem para conferência (visão Unidade Escolar).
@@ -13,8 +11,7 @@ test.describe('Escola > Ocorrências > Escolares', () => {
   test('cria as ocorrências configuradas com envolvido e mantém para conferência', async ({ page }) => {
     const configuracao = lerConfiguracaoCriacaoOcorrenciaEscolar();
     test.setTimeout(Math.max(240000, configuracao.quantidade * 150000));
-    await loginSge(page, { baseUrl: BASE_URL });
-    await entrarNaUnidadeEscolar(page, configuracao.escola);
+    await loginNaUnidadeEscolar(page, configuracao.escola, BASE_URL);
 
     for (let sequencia = 1; sequencia <= configuracao.quantidade; sequencia++) {
       const criada = await criarOcorrenciaEscolar(page, configuracao.dados, sequencia);

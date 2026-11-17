@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { excluirOcorrenciaEscolar, excluirOcorrenciasEscolaresEmLote } from '../../../../src/actions';
-import { loginSge } from '../../../../src/helpers';
-import { entrarNaUnidadeEscolar } from '../../../../src/helpers/navigation/conselho-escolar.navigation';
+import { loginNaUnidadeEscolar } from '../../../../src/helpers/navigation/ocorrencia-escolar.navigation';
 import { lerConfiguracaoExclusaoOcorrenciaEscolar } from './ocorrencia_escolar_config';
 
 // Modo: REGRESSÃO AUTOMATIZADA. Em lote, abre cada ocorrência e exclui só as de descrição QAAUTO;
@@ -12,8 +11,7 @@ test.describe('Exclusão configurável de Ocorrência Escolar', () => {
   test('exclui somente ocorrências QAAUTO, em lote ou pelo número informado no JSON', async ({ page }) => {
     const configuracao = lerConfiguracaoExclusaoOcorrenciaEscolar();
     test.setTimeout(600000);
-    await loginSge(page, { baseUrl: BASE_URL });
-    await entrarNaUnidadeEscolar(page, configuracao.escola);
+    await loginNaUnidadeEscolar(page, configuracao.escola, BASE_URL);
 
     if (configuracao.excluirTodasQAAUTO) {
       const resultado = await excluirOcorrenciasEscolaresEmLote(page, configuracao.termoGeral);

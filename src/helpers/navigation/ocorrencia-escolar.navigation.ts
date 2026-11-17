@@ -1,6 +1,20 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { getByRoleSge } from '../sge-locators.helper';
-import { waitForSgeLoaders } from './common.navigation';
+import { entrarNaUnidadeEscolar } from './conselho-escolar.navigation';
+import { loginSge, waitForSgeLoaders } from './common.navigation';
+
+/**
+ * Entra na visão Unidade Escolar da escola. Com SGE_USUARIO_UNIDADE/SGE_SENHA_UNIDADE no .env,
+ * loga direto como usuário da unidade; sem elas, loga como Secretaria e usa "Autenticar Unidade".
+ */
+export async function loginNaUnidadeEscolar(page: Page, escola: string, baseUrl?: string): Promise<void> {
+  const usuario = process.env.SGE_USUARIO_UNIDADE;
+  const senha = process.env.SGE_SENHA_UNIDADE;
+  if (Boolean(usuario) !== Boolean(senha))
+    throw new Error('Defina SGE_USUARIO_UNIDADE e SGE_SENHA_UNIDADE juntas no .env.');
+  await loginSge(page, { baseUrl, ...(usuario && senha ? { usuario, senha } : {}), timeout: 60000 });
+  await entrarNaUnidadeEscolar(page, escola);
+}
 
 function main(page: Page): Locator {
   return page.locator('#main');

@@ -80,7 +80,7 @@ export function lerConfiguracaoExclusaoOcorrenciaEscolar(): ConfiguracaoExclusao
   if (config.excluirTodasQAAUTO && termoGeral.toLocaleUpperCase('pt-BR') !== 'QAAUTO') {
     throw new Error(`${arquivo}: a limpeza em lote está limitada ao termo 'QAAUTO'.`);
   }
-  if (!config.excluirTodasQAAUTO && !/^d+$/.test(numero)) {
+  if (!config.excluirTodasQAAUTO && !/^\d+$/.test(numero)) {
     throw new Error(`${arquivo}: informe 'numero' (só dígitos) para excluir uma ocorrência específica.`);
   }
   return { escola: textoObrigatorio(config, 'escola', arquivo), excluirTodasQAAUTO: config.excluirTodasQAAUTO, termoGeral, numero };

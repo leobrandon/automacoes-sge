@@ -1,8 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { criarOcorrenciaEscolar, excluirOcorrenciaEscolar, validarRecusasOcorrenciaEscolar } from '../../../../src/actions';
-import { loginSge } from '../../../../src/helpers';
-import { entrarNaUnidadeEscolar } from '../../../../src/helpers/navigation/conselho-escolar.navigation';
-import { linhaOcorrencia, navegarParaOcorrenciaEscolar } from '../../../../src/helpers/navigation/ocorrencia-escolar.navigation';
+import { linhaOcorrencia, loginNaUnidadeEscolar, navegarParaOcorrenciaEscolar } from '../../../../src/helpers/navigation/ocorrencia-escolar.navigation';
 import { lerConfiguracaoCriacaoOcorrenciaEscolar } from './ocorrencia_escolar_config';
 
 // Modo: REGRESSÃO AUTOMATIZADA. A limpeza remove apenas as ocorrências criadas nesta execução.
@@ -12,8 +10,7 @@ test.describe('Ciclo completo de Ocorrência Escolar', () => {
   test('confere a recusa, cria, consulta e exclui somente as ocorrências criadas nesta execução', async ({ page }) => {
     const configuracao = lerConfiguracaoCriacaoOcorrenciaEscolar();
     test.setTimeout(Math.max(300000, configuracao.quantidade * 150000));
-    await loginSge(page, { baseUrl: BASE_URL });
-    await entrarNaUnidadeEscolar(page, configuracao.escola);
+    await loginNaUnidadeEscolar(page, configuracao.escola, BASE_URL);
 
     const criadas: string[] = [];
     const falhas: Error[] = [];
