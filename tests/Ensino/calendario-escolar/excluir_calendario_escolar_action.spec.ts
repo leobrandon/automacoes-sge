@@ -1,14 +1,17 @@
 import { expect, test } from '@playwright/test';
-import { excluirCalendarioEscolar, excluirCalendariosEscolaresQAAUTO } from '../../../src/actions';
+import { criarCalendarioEscolar, excluirCalendarioEscolar } from '../../../src/actions';
 import { loginSge } from '../../../src/helpers';
-import { configExclusaoCalendarioEscolar } from './calendario_escolar_config';
-test('exclui calendário QAAUTO conforme a configuração', async ({ page }) => {
-  const config = configExclusaoCalendarioEscolar();
+import { configCalendarioEscolar, dadosCalendarioSemAnoComposicao } from './calendario_escolar_config';
+test('exclui somente o calendário QAAUTO criado nesta spec', async ({ page }) => {
+  const config = configCalendarioEscolar();
+  test.setTimeout(Math.max(180000, config.quantidade * 120000));
   await loginSge(page, { baseUrl: process.env.BASE_URL });
-  if (config.excluirTodosQAAUTO) {
-    const excluidos = await excluirCalendariosEscolaresQAAUTO(page);
-    expect(excluidos.every((nome) => /^QAAUTO\b/i.test(nome))).toBe(true);
-  } else {
-    expect(await excluirCalendarioEscolar(page, config.descricao)).toBe(config.descricao);
+  for (let i = 1; i <= config.quantidade; i++) {
+    const nome = await criarCalendarioEscolar(
+      page,
+      dadosCalendarioSemAnoComposicao(config.dados),
+      i,
+    );
+    expect(await excluirCalendarioEscolar(page, nome)).toBe(nome);
   }
 });

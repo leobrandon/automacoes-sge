@@ -1,26 +1,55 @@
 import { expect, type Page } from '@playwright/test';
+import { getByRoleSge } from '../helpers/sge-locators.helper';
 import {
+  abrirAbaComposicaoEnsino,
+  abrirCalendarioEscolar,
   linhaCalendarioEscolar,
+  linhasComposicaoCalendario,
   pesquisarCalendarioEscolar,
 } from '../helpers/navigation/calendario-escolar.navigation';
+
+/**
+ * O SGE recusa excluir um calendário com composições vinculadas
+ * ("Não é possível deletar esse calendário, pois existem composições vinculadas a ele."),
+ * então as composições são removidas antes, pela própria grade do calendário.
+ */
+async function removerComposicoesCalendarioEscolar(page: Page): Promise<number> {
+  const m = page.locator('#main');
+  let removidas = 0;
+  let totalAnterior = Number.MAX_SAFE_INTEGER;
+  for (let tentativa = 0; tentativa < 20; tentativa++) {
+    await abrirAbaComposicaoEnsino(page);
+    const linhas = linhasComposicaoCalendario(page);
+    const total = await linhas.count();
+    if (total === 0) return removidas;
+    if (total >= totalAnterior)
+      throw new Error(
+        `A grade de composições não diminuiu: ${total} linha(s) antes de remover a próxima.`,
+      );
+    totalAnterior = total;
+    await linhas.first().click();
+    await expect(
+      m.locator('h4').filter({ hasText: 'Editar Configuração de Composição De Ensino' }),
+    ).toBeVisible({ timeout: 30000 });
+    await getByRoleSge(m, 'button', { name: /Excluir/ }).click();
+    const confirmacao = page
+      .locator('.MessageBoxContainer:visible')
+      .filter({ hasText: 'Tem certeza que deseja excluir?' });
+    await expect(confirmacao).toBeVisible();
+    await confirmacao.getByRole('button', { name: 'Sim', exact: true }).click();
+    await expect(m.locator('h4').filter({ hasText: 'Editar Calendário Escolar' })).toBeVisible({
+      timeout: 30000,
+    });
+    removidas++;
+  }
+  throw new Error('A remoção das composições do calendário não terminou em 20 tentativas.');
+}
+
 export async function excluirCalendarioEscolar(page: Page, nome: string): Promise<string> {
   const alvo = nome.trim();
   if (!/^QAAUTO\b/i.test(alvo)) throw new Error('A exclusão exige descrição QAAUTO.');
-  await pesquisarCalendarioEscolar(page, alvo);
-  const linha = linhaCalendarioEscolar(page, alvo);
-  await expect(linha).toHaveCount(1);
-  const rotaEdicao = await linha.locator('input[name="url"]').inputValue();
-  const id = rotaEdicao.match(/\/editar\/(\d+)$/i)?.[1];
-  if (!id) throw new Error(`Não foi possível identificar o calendário "${alvo}" na grade.`);
-  const [carregamento] = await Promise.all([
-    page.waitForResponse((resposta) => {
-      const url = new URL(resposta.url());
-      return url.pathname.toLowerCase() === '/calendarioescolar/getcalculamescalendarioescolar' &&
-        url.searchParams.get('calendarioId') === id && resposta.request().method() === 'GET';
-    }, { timeout: 30000 }),
-    linha.click(),
-  ]);
-  if (!carregamento.ok()) throw new Error(`O carregamento do calendário retornou HTTP ${carregamento.status()}.`);
+  await abrirCalendarioEscolar(page, alvo);
+  await removerComposicoesCalendarioEscolar(page);
   const m = page.locator('#main');
   await expect(m.locator('#Descricao')).toHaveValue(alvo);
   await m.locator('#btn_excluir').click();
