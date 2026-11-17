@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 /**
  * Opções de configuração para seleção no Select2.
@@ -16,6 +16,9 @@ export interface Select2Options {
    * @default false
    */
   exactMatch?: boolean;
+
+  /** Aguarda exatamente uma opção correspondente. */
+  requireUniqueMatch?: boolean;
 
   /**
    * Texto customizado para preencher no campo de pesquisa antes de selecionar.
@@ -173,29 +176,25 @@ export class Select2Helper {
     }
 
     // 5. Localizar a opção correta nos resultados da lista
-    const selectableItems = dropdown.locator(
-      'ul.select2-results li.select2-result-selectable, ul.select2-results li:not(.select2-disabled):not(.select2-searching):not(.select2-no-results)'
-    );
+    const selectableItems = dropdown.locator(options.requireUniqueMatch
+      ? 'ul.select2-results li.select2-result-selectable'
+      : 'ul.select2-results li.select2-result-selectable, ul.select2-results li:not(.select2-disabled):not(.select2-searching):not(.select2-no-results)');
 
-    let targetOption: Locator;
-
-    if (typeof optionText === 'string') {
-      if (exactMatch) {
-        const trimmed = optionText.trim();
-        targetOption = selectableItems.filter({
-          hasText: new RegExp(`^\\s*${escapeRegex(trimmed)}\\s*$`, 'i')
-        }).first();
-      } else {
-        targetOption = selectableItems.filter({ hasText: optionText }).first();
-      }
-    } else {
-      targetOption = selectableItems.filter({ hasText: optionText }).first();
-    }
+    const matcher = typeof optionText === 'string' && exactMatch
+      ? new RegExp(`^\\s*${escapeRegex(optionText.trim())}\\s*$`, 'i')
+      : optionText;
+    const matches = selectableItems.filter({ hasText: matcher });
+    const targetOption = options.requireUniqueMatch ? matches : matches.first();
 
     // 6. Validar existência da opção e selecionar
-    const optionFound = await targetOption.isVisible({ timeout: 4000 }).catch(() => false);
-
-    if (!optionFound) {
+    try {
+      if (options.requireUniqueMatch) {
+        await expect(targetOption).toHaveCount(1, { timeout });
+        await expect(targetOption).toBeVisible({ timeout });
+      } else if (!await targetOption.isVisible()) {
+        throw new Error('Opção indisponível.');
+      }
+    } catch (cause) {
       // Coletar opções disponíveis para mensagem de erro explicativa
       const availableOptions: string[] = [];
       const count = await selectableItems.count();
@@ -209,8 +208,8 @@ export class Select2Helper {
 
       const expectedLabel = typeof optionText === 'string' ? `"${optionText}"` : optionText.toString();
       throw new Error(
-        `[Select2Helper] Opção ${expectedLabel} não encontrada no Select2 "${containerSelector}". ` +
-        `Opções disponíveis encontradas (${count}): [${availableOptions.join(' | ')}]`
+        `[Select2Helper] Opção ${expectedLabel} ausente ou ambígua no Select2 "${containerSelector}". ` +
+        `Opções exibidas (${count}): [${availableOptions.join(' | ')}]`, { cause },
       );
     }
 
@@ -219,7 +218,11 @@ export class Select2Helper {
 
     // 7. Aguardar fechamento do dropdown (para single select)
     if (!options.isMultiple) {
-      await dropdown.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+      if (options.requireUniqueMatch) {
+        await expect(dropdown).toBeHidden({ timeout });
+      } else {
+        await dropdown.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+      }
     }
 
     // 8. Validar que a seleção foi refletida no container (com suporte case-insensitive para strings e RegExp direto)
