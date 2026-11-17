@@ -177,3 +177,5 @@ export * from './criar-conselho-escolar.action';
 export * from './excluir-conselho-escolar.action';
 export * from './criar-funcao-conselho.action';
 export * from './excluir-funcao-conselho.action';
+export * from './criar-planejamento-escola.action';
+export * from './excluir-planejamento-escola.action';
