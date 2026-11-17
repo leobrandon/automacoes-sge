@@ -13,7 +13,8 @@ export async function excluirOcorrenciaEscolar(page: Page, numero: string): Prom
   await navegarParaOcorrenciaEscolar(page);
   const linha = linhaOcorrencia(page, numero);
   await expect(linha, `A ocorrência número ${numero} não está na grade.`).toHaveCount(1, { timeout: 15000 });
-  await getByRoleSge(linha, 'cell', { name: numero, exact: true }).click();
+  // Sem timeout explícito um clique espera até o limite do teste (600 s no lote); falha cedo.
+  await getByRoleSge(linha, 'cell', { name: numero, exact: true }).click({ timeout: 20000 });
 
   const conteudo = page.locator('#main');
   await expect(conteudo.locator('h4').filter({ hasText: /Editar Ocorrência Escolar/ })).toBeVisible({ timeout: 20000 });
@@ -22,10 +23,10 @@ export async function excluirOcorrenciaEscolar(page: Page, numero: string): Prom
     throw new OcorrenciaNaoQAAutoError(numero, descricao);
   }
 
-  await conteudo.locator('#btn_excluir').click();
+  await conteudo.locator('#btn_excluir').click({ timeout: 20000 });
   // A pergunta de exclusão desta tela não é um diálogo ARIA: localiza pelo texto e pelo botão "Sim".
   await expect(page.getByText(/Tem certeza que deseja excluir/i)).toBeVisible({ timeout: 15000 });
-  await page.locator('button:visible').filter({ hasText: /^\s*Sim\s*$/ }).click();
+  await page.locator('button:visible').filter({ hasText: /^\s*Sim\s*$/ }).click({ timeout: 20000 });
 
   await expect(tituloConsultaOcorrencia(page)).toBeVisible({ timeout: 20000 });
   await expect(linhaOcorrencia(page, numero)).toHaveCount(0, { timeout: 15000 });

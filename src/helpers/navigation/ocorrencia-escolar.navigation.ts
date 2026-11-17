@@ -43,13 +43,13 @@ export async function navegarParaOcorrenciaEscolar(page: Page): Promise<void> {
   if (!await escolares.isVisible()) {
     if (!await ocorrencias.isVisible()) {
       await escola.waitFor({ state: 'visible', timeout: 15000 });
-      await escola.click();
+      await escola.click({ timeout: 20000 });
     }
     await ocorrencias.waitFor({ state: 'visible', timeout: 15000 });
-    await ocorrencias.click();
+    await ocorrencias.click({ timeout: 20000 });
   }
   await escolares.waitFor({ state: 'visible', timeout: 15000 });
-  await escolares.click();
+  await escolares.click({ timeout: 20000 });
 
   await expect(tituloConsultaOcorrencia(page)).toBeVisible({ timeout: 30000 });
   await waitForSgeLoaders(page);
