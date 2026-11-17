@@ -17,5 +17,58 @@
     "LimiteRegistroConteudoQuartoBimestre": "20/12/2026",
     "FimPrimeiroSemestre": "30/06/2026",
     "FimSegundoSemestre": "20/12/2026"
-  }
+  },
+  "composicoes": [
+    {
+      "composicao": "COMPOSIÇÃO DE ENSINO ANOS INICIAIS",
+      "tipoAtendimento": "Parcial",
+      "periodicidade": "Anual",
+      "materiaEscolar": "Componente Curricular",
+      "origemCargaHoraria": "Turma",
+      "formulaAprovacao": "",
+      "anoComposicao": {
+        "anoEscolar": "1º ANO",
+        "tipoDiario": "Coletivo",
+        "formaAvaliacao": "Nota",
+        "anoEscolarDestino": "2º ANO - COMPOSIÇÃO DE ENSINO ANOS INICIAIS",
+        "fichaAvaliativa": "Ficha Avaliativa N1",
+        "tipoObservacoesFichaAvaliativa": "Bimestral",
+        "observacaoDiarioClasse": "QAAUTO Configuração de Ano Escolar",
+        "componentesCurriculares": [
+          {
+            "componente": "Lingua Portuguesa",
+            "cargaHoraria": "200",
+            "quantidadeAulasSemanais": "3",
+            "quantidadeAulasPresenciais": "3",
+            "quantidadeAulasNaoPresenciais": "0",
+            "formaAvaliacao": "Nota"
+          },
+          {
+            "componente": "Matemática",
+            "cargaHoraria": "50",
+            "quantidadeAulasSemanais": "5",
+            "quantidadeAulasPresenciais": "5",
+            "quantidadeAulasNaoPresenciais": "0",
+            "formaAvaliacao": "Nota"
+          }
+        ]
+      }
+    },
+    {
+      "composicao": "COMPOSIÇÃO DE ENSINO ANOS INICIAIS",
+      "tipoAtendimento": "Integral",
+      "periodicidade": "Anual",
+      "materiaEscolar": "Componente Curricular",
+      "origemCargaHoraria": "Turma",
+      "formulaAprovacao": ""
+    },
+    {
+      "composicao": "COMPOSIÇÃO DE ENSINO ANOS FINAIS",
+      "tipoAtendimento": "Parcial",
+      "periodicidade": "Anual",
+      "materiaEscolar": "Componente Curricular",
+      "origemCargaHoraria": "Turma",
+      "formulaAprovacao": ""
+    }
+  ]
 }
