@@ -52,4 +52,6 @@ export * from './remanejamento-interno.navigation';
 export * from './conselho-escolar.navigation';
 export * from './funcao-conselho.navigation';
 export * from './configurar-ano-escolar.navigation';
+export * from './formula-aprovacao.navigation';
+export * from './ocorrencia-escolar.navigation';
 export * from './planejamento-escola.navigation';
