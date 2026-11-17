@@ -185,3 +185,5 @@ export * from './criar-ocorrencia-escolar.action';
 export * from './excluir-ocorrencia-escolar.action';
 export * from './criar-planejamento-escola.action';
 export * from './excluir-planejamento-escola.action';
+export * from './criar-ocorrencia-saude-colaborador.action';
+export * from './cancelar-ocorrencia-saude-colaborador.action';
