@@ -1,0 +1,14 @@
+{
+  "quantidade": "",
+  "descricao": "QAAUTO Fórmula de Aprovação",
+  "frequenciaMinima": "75",
+  "arredondamento": "Não Arredondar",
+  "conselhoClasse": "Não utiliza conselho",
+  "lancamentos": "Não pode efetuar lançamentos manuais",
+  "formulaAprovacao": "(NB1+NB2+NB3+NB4)/4",
+  "formulaConceitoFinal": "(NB1+NB2+NB3+NB4)/4",
+  "casasDecimais": "Sem casas decimais",
+  "notaMaximaMediaFinal": "10",
+  "mediaAprovacao": "6",
+  "quantidadeDisciplinasRecuperacao": "1"
+}
