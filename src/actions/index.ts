@@ -187,3 +187,5 @@ export * from './criar-planejamento-escola.action';
 export * from './excluir-planejamento-escola.action';
 export * from './criar-ocorrencia-saude-colaborador.action';
 export * from './cancelar-ocorrencia-saude-colaborador.action';
+export * from './criar-item.action';
+export * from './excluir-item.action';
