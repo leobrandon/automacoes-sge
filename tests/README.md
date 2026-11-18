@@ -9,4 +9,4 @@ As pastas espelham o caminho visível do menu lateral do SGE (`Menu > Submenu > 
 
 Cada pasta de módulo ou entidade mantém suas specs, dados e configurações relacionadas.
 
-O Test Explorer usa `playwright.config.ts` para exibir os cenários de regressão (`*action.spec.ts` e `*fixture.spec.ts`). Specs de factory são unitárias e ficam fora dessa árvore; para executá-las, use `npm run test:unit`, que utiliza `playwright.unit.config.ts`.
+O Test Explorer usa `playwright.config.ts` para exibir os cenários de regressão (`*action.spec.ts` e `*fixture.spec.ts`, com prefixo de fase `1_`..`4_` que define a ordem: criar+excluir, criar, ações, excluir). Specs de factory são unitárias e ficam fora dessa árvore; para executá-las, use `npm run test:unit`, que utiliza `playwright.unit.config.ts`.

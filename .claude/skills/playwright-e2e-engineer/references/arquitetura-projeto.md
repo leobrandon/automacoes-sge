@@ -38,12 +38,15 @@ das specs, que usam `from '../../../src/actions'`.
 
 O projeto `regression` (`playwright.config.ts`) só descobre
 `**/*action.spec.ts` e `**/*fixture.spec.ts`, e ignora `**/*factory.spec.ts` e
-`**/estudos/**`. Nomeie assim:
+`**/estudos/**`. Nomeie assim, **sempre com o prefixo numérico da fase**: o
+Playwright/VS Code ordenam por nome, então o prefixo define a ordem de execução
+dentro da pasta (1 criar+excluir, 2 criar, 3 ações sobre registro existente, 4 excluir):
 
-- `criar_<entidade>_action.spec.ts` — cria e **mantém** o registro (conferência manual no sandbox).
-- `excluir_<entidade>_action.spec.ts` — exclui por JSON (individual exato ou lote `QAAUTO`).
-- `criar_e_excluir_<entidade>_action.spec.ts` — ciclo completo; é o que serve de regressão repetível.
-- `<entidade>_fixture.spec.ts` — valida a fixture.
+- `1_criar_e_excluir_<entidade>_action.spec.ts` — ciclo completo; é o que serve de regressão repetível.
+- `2_criar_<entidade>_action.spec.ts` — cria e **mantém** o registro (conferência manual no sandbox).
+- `3_<acao>_<entidade>_action.spec.ts` — concluir, cancelar, inativar, alocar, lançar, editar etc.; age sobre registro já existente.
+- `4_excluir_<entidade>_action.spec.ts` — exclui por JSON (individual exato ou lote `QAAUTO`); também `4_limpar_...`.
+- `1_<entidade>_fixture.spec.ts` — valida a fixture.
 - `<entidade>_factory.spec.ts` — teste unitário puro da factory/config; roda só no projeto `unit`.
 
 Um arquivo fora desses sufixos resulta em **zero testes descobertos**.
@@ -52,7 +55,7 @@ Um arquivo fora desses sufixos resulta em **zero testes descobertos**.
 
 ```bash
 # E2E (projeto regression, workers=1, sem retry)
-npx playwright test --project=regression "tests/Cadastro/Ensino/atividades-aee/criar_e_excluir_atividade_aee_action.spec.ts" --workers=1 --retries=0
+npx playwright test --project=regression "tests/Cadastro/Ensino/atividades-aee/1_criar_e_excluir_atividade_aee_action.spec.ts" --workers=1 --retries=0
 
 # Unitário de factory/config (não acessa o SGE)
 npx playwright test --config=playwright.unit.config.ts --project=unit "tests/Cadastro/Ensino/atividades-aee/atividade_aee_factory.spec.ts" --workers=1 --retries=0
