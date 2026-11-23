@@ -18,5 +18,6 @@ export default defineConfig({
     channel: 'chrome',
     viewport: { width: 1280, height: 900 },
   },
+  reporter: [['list'], ['html', { open: 'never' }]],
   projects: [{ name: 'regression', testMatch: ['**/*action.spec.ts', '**/*fixture.spec.ts'] }],
 });

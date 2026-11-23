@@ -8,9 +8,9 @@ carga horária, jornada por dia da semana e opções de cálculo usadas por cont
 
 | Arquivo | O que faz |
 | --- | --- |
-| `criar_horario_action.spec.ts` | Cria `quantidade` Horários QAAUTO e **mantém** no ambiente. |
-| `excluir_horario_action.spec.ts` | Exclui por `dados_exclusao_horario.json`: individual (descrição exata) ou lote (`excluirTodasQAAUTO: true`). |
-| `criar_e_excluir_horario_action.spec.ts` | Ciclo completo: cria, consulta, reabre para conferir persistência e exclui só o que a própria execução criou. |
+| `2_criar_horario_action.spec.ts` | Cria `quantidade` Horários QAAUTO e **mantém** no ambiente. |
+| `4_excluir_horario_action.spec.ts` | Exclui por `dados_exclusao_horario.json`: individual (descrição exata) ou lote (`excluirTodasQAAUTO: true`). |
+| `1_criar_e_excluir_horario_action.spec.ts` | Ciclo completo: cria, consulta, reabre para conferir persistência e exclui só o que a própria execução criou. |
 | `horario_factory.spec.ts` | Unitário da factory/config (projeto `unit`, não acessa o SGE). |
 
 ## `dados_horario.json`

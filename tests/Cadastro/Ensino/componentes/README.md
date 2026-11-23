@@ -6,9 +6,9 @@ Automação do caminho visível `Cadastro > Ensino > Componentes`, executada no 
 
 - `dados_componente.json`: quantidade e campos do formulário; nome, abreviação e código vazios são gerados pela factory.
 - `dados_exclusao_componente.json`: `excluirTodasQAAUTO: true` remove pela interface todos os Componentes com nome iniciado por `QAAUTO`; com `false`, `nome` identifica um único registro QAAUTO.
-- `criar_componente_action.spec.ts`: cria e mantém os registros para conferência.
-- `excluir_componente_action.spec.ts`: exclui os Componentes QAAUTO em lote ou o nome exato indicado no JSON de exclusão.
-- `criar_e_excluir_componente_action.spec.ts`: cria, consulta e remove apenas os registros gerados na própria execução.
+- `2_criar_componente_action.spec.ts`: cria e mantém os registros para conferência.
+- `4_excluir_componente_action.spec.ts`: exclui os Componentes QAAUTO em lote ou o nome exato indicado no JSON de exclusão.
+- `1_criar_e_excluir_componente_action.spec.ts`: cria, consulta e remove apenas os registros gerados na própria execução.
 - `componentes_factory.spec.ts`: cobre geração, limites dos campos e proteção do prefixo QAAUTO.
 
 O fluxo feliz preenche os campos obrigatórios Nome, Abreviação, Código, Tipo e Componente Curricular do Educacenso. A criação mantém os controles opcionais desativados, evitando os campos dependentes de atividade complementar, itinerário e cor.

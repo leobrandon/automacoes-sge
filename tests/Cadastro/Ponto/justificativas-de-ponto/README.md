@@ -8,9 +8,9 @@ justificativa; não registra a ocorrência de um colaborador.
 
 | Arquivo | O que faz |
 | --- | --- |
-| `criar_justificativa_ponto_action.spec.ts` | Cria `quantidade` Justificativas QAAUTO e **mantém** no ambiente. |
-| `excluir_justificativa_ponto_action.spec.ts` | Exclui por `dados_exclusao_justificativa_ponto.json`: individual (descrição exata) ou lote (`excluirTodasQAAUTO: true`). |
-| `criar_e_excluir_justificativa_ponto_action.spec.ts` | Ciclo completo: cria, consulta, reabre para conferir persistência e exclui só o que a própria execução criou. |
+| `2_criar_justificativa_ponto_action.spec.ts` | Cria `quantidade` Justificativas QAAUTO e **mantém** no ambiente. |
+| `4_excluir_justificativa_ponto_action.spec.ts` | Exclui por `dados_exclusao_justificativa_ponto.json`: individual (descrição exata) ou lote (`excluirTodasQAAUTO: true`). |
+| `1_criar_e_excluir_justificativa_ponto_action.spec.ts` | Ciclo completo: cria, consulta, reabre para conferir persistência e exclui só o que a própria execução criou. |
 | `justificativa_ponto_factory.spec.ts` | Unitário da factory/config (projeto `unit`, não acessa o SGE). |
 
 ## `dados_justificativa_ponto.json`

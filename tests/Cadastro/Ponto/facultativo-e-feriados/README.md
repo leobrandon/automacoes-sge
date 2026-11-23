@@ -6,9 +6,9 @@ Menu: `Cadastro > Ponto > Facultativo e Feriados` (tela "Consulta de Feriados/Fa
 
 | Arquivo | O que faz |
 | --- | --- |
-| `criar_facultativo_feriado_action.spec.ts` | Cria `quantidade` registros QAAUTO e **mantém** no ambiente. |
-| `excluir_facultativo_feriado_action.spec.ts` | Exclui por `dados_exclusao_facultativo_feriado.json`: individual (descrição exata) ou lote (`excluirTodasQAAUTO: true`). |
-| `criar_e_excluir_facultativo_feriado_action.spec.ts` | Ciclo completo: cria, consulta e exclui só o que a própria execução criou. |
+| `2_criar_facultativo_feriado_action.spec.ts` | Cria `quantidade` registros QAAUTO e **mantém** no ambiente. |
+| `4_excluir_facultativo_feriado_action.spec.ts` | Exclui por `dados_exclusao_facultativo_feriado.json`: individual (descrição exata) ou lote (`excluirTodasQAAUTO: true`). |
+| `1_criar_e_excluir_facultativo_feriado_action.spec.ts` | Ciclo completo: cria, consulta e exclui só o que a própria execução criou. |
 | `facultativo_feriado_factory.spec.ts` | Unitário da factory/config (projeto `unit`, não acessa o SGE). |
 
 ## JSONs

@@ -4,9 +4,9 @@ Automação do caminho visível `Cadastro > Ensino > Composição De Ensino`, ex
 
 ## Arquivos
 
-- `criar_composicao_ensino_action.spec.ts`: cria a quantidade informada e mantém os registros para conferência.
-- `excluir_composicao_ensino_action.spec.ts`: exclui todos os registros QAAUTO do cadastro ou uma composição QAAUTO indicada pelo nome exato.
-- `criar_e_excluir_composicao_ensino_action.spec.ts`: cria, consulta e exclui somente os registros criados pela própria execução.
+- `2_criar_composicao_ensino_action.spec.ts`: cria a quantidade informada e mantém os registros para conferência.
+- `4_excluir_composicao_ensino_action.spec.ts`: exclui todos os registros QAAUTO do cadastro ou uma composição QAAUTO indicada pelo nome exato.
+- `1_criar_e_excluir_composicao_ensino_action.spec.ts`: cria, consulta e exclui somente os registros criados pela própria execução.
 - `dados_composicao_ensino.json`: quantidade e dados do formulário. Campos vazios são gerados pela factory; a descrição recebe sufixos sequenciais começando em 1.
 - `dados_exclusao_composicao_ensino.json`: define limpeza QAAUTO em lote ou exclusão por descrição exata.
 
