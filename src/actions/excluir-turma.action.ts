@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 import { waitForSgeLoaders, navegarParaConsultaTurmas } from '../helpers';
 import { TurmaCriada, TurmaEscolarizacaoData } from './criar-turma.action';
 
@@ -141,12 +141,12 @@ export async function excluirTurma(
   await btnSim.click();
 
   // 8. Trata o diálogo de retorno (Sucesso ou Bloqueio)
-  const modalFeedback = page.locator('.swal2-popup:visible, [role="dialog"]:visible').first();
+  const modalFeedback = page.locator('.swal2-popup:visible, [role="dialog"]:visible').filter({ hasNotText: /Aguarde/i }).first();
   await modalFeedback.waitFor({ state: 'visible', timeout: 20000 });
 
   const isError = (await modalFeedback.locator('.swal2-error:visible, .swal2-warning:visible').count()) > 0;
   const titulo = (await modalFeedback.locator('#swal2-title, .swal2-title').textContent().catch(() => '')) || '';
-  const texto = (await modalFeedback.locator('#swal2-content, .swal2-content, .swal2-html-container').textContent().catch(() => '')) || '';
+  const texto = ((await modalFeedback.innerText().catch(() => '')) || '').replace(/s+/g, ' ').trim();
 
   if (isError || titulo.toLowerCase().includes('erro') || titulo.toLowerCase().includes('atenção') || texto.toLowerCase().includes('não é possível')) {
     const btnOkErro = modalFeedback.locator('.swal2-confirm, button:has-text("Ok")').first();
@@ -173,6 +173,14 @@ export async function excluirTurma(
 }
 
 /**
+ * Lê a descrição de uma linha da grid: primeira célula com texto (a 1ª coluna visível pode ser vazia/ícone).
+ */
+async function lerDescricaoLinha(row: Locator, termo: string): Promise<string> {
+  const celulas = (await row.locator('td').allInnerTexts().catch(() => [])).map((t) => t.trim()).filter(Boolean);
+  return celulas.find((t) => t.toLowerCase().includes(termo.toLowerCase())) || celulas[0] || '';
+}
+
+/**
  * Remove em lote todas as turmas cadastradas cujo nome contenha o termo especificado (ex: "QAAUTO").
  *
  * Projetado para limpeza contínua e segura de bases de homologação/testes.
@@ -190,7 +198,7 @@ export async function excluirTurmasEmLote(
   maxExclusoes: number = 50
 ): Promise<LoteExclusaoTurmasResultado> {
   const turmasExcluidas: string[] = [];
-  const falhas: Array<{ descricao: string; motivo: string }> = [];
+  const falhas: Array<{ descricao: string; motivo: string; chave: string }> = [];
 
   await navegarParaConsultaTurmas(page);
   await executarBuscaGridTurmas(page, termo);
@@ -202,46 +210,42 @@ export async function excluirTurmasEmLote(
     const rowOrEmpty = page.locator('table tbody tr.onclickClassGrid, table tbody td.dataTables_empty, table tbody tr:has-text("Nenhum")').first();
     await rowOrEmpty.waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});
 
-    const candidateRows = page.locator('table tbody tr.onclickClassGrid, table tr.onclickClassGrid').filter({
-      hasText: termo,
-    });
+    const todasLinhas = page.locator('table tbody tr.onclickClassGrid, table tr.onclickClassGrid');
+    const totalLinhas = await todasLinhas.count();
 
-    const totalRestante = await candidateRows.count();
-    if (totalRestante === 0) {
-      break;
-    }
-
-    // Se todas as linhas restantes já estiverem registradas como falhas/bloqueadas, interrompe
-    let targetRow = candidateRows.first();
-    let descricaoDetectada = (await targetRow.locator('td:first-child, td:visible').first().innerText().catch(() => '')) || `Turma #${iteracao + 1}`;
-
-    // Procura a primeira linha que ainda NÃO falhou
-    let encontrouPendente = false;
-    for (let r = 0; r < totalRestante; r++) {
-      const rowAtual = candidateRows.nth(r);
-      const descAtual = (await rowAtual.locator('td:first-child, td:visible').first().innerText().catch(() => '')) || '';
-      if (!falhas.some(f => f.descricao === descAtual)) {
+    // Procura a primeira linha cuja descrição COMEÇA com o termo e que ainda não falhou
+    let targetRow: Locator | null = null;
+    let descricaoDetectada = '';
+    let idDetectado = '';
+    let totalElegiveis = 0;
+    for (let r = 0; r < totalLinhas; r++) {
+      const rowAtual = todasLinhas.nth(r);
+      const descAtual = await lerDescricaoLinha(rowAtual, termo);
+      if (!descAtual.toLowerCase().startsWith(termo.toLowerCase())) continue;
+      totalElegiveis++;
+      const urlAtual = (await rowAtual.locator('input[name="url"]').getAttribute('value').catch(() => '')) || '';
+      const idAtual = urlAtual.split('/').pop() || '';
+      const chave = idAtual || descAtual;
+      if (falhas.some((f) => f.chave === chave)) continue;
+      if (!targetRow) {
         targetRow = rowAtual;
         descricaoDetectada = descAtual;
-        encontrouPendente = true;
-        break;
+        idDetectado = idAtual;
       }
     }
 
-    if (!encontrouPendente) {
-      console.log(`ℹ️ Todas as ${totalRestante} turmas restantes com "${termo}" possuem impedimento para exclusão.`);
+    if (totalElegiveis === 0) break;
+    if (!targetRow) {
+      console.log(`ℹ️ Todas as ${totalElegiveis} turmas restantes com "${termo}" possuem impedimento para exclusão.`);
       break;
     }
 
     iteracao++;
-    const urlEditar = (await targetRow.locator('input[name="url"]').getAttribute('value').catch(() => '')) || '';
-    const idDetectado = urlEditar.split('/').pop() || '';
-
     console.log(`\n🧹 [Lote ${iteracao}] Excluindo turma "${descricaoDetectada}" (ID: ${idDetectado || 'N/A'})...`);
 
     try {
       // 1. Acessa a edição clicando na descrição visível
-      await targetRow.locator('td:visible').first().click();
+      await targetRow.locator('td:visible').filter({ hasText: /S/ }).first().click();
 
       // 2. Aguarda botão Excluir e formulário de edição
       const btnExcluir = page.locator('#btn_excluir');
@@ -258,12 +262,12 @@ export async function excluirTurmasEmLote(
       await btnSim.click();
 
       // 5. Trata modal de feedback
-      const modalFeedback = page.locator('.swal2-popup:visible, [role="dialog"]:visible').first();
+      const modalFeedback = page.locator('.swal2-popup:visible, [role="dialog"]:visible').filter({ hasNotText: /Aguarde/i }).first();
       await modalFeedback.waitFor({ state: 'visible', timeout: 20000 });
 
       const isError = (await modalFeedback.locator('.swal2-error:visible, .swal2-warning:visible').count()) > 0;
       const titulo = (await modalFeedback.locator('#swal2-title, .swal2-title').textContent().catch(() => '')) || '';
-      const texto = (await modalFeedback.locator('#swal2-content, .swal2-content, .swal2-html-container').textContent().catch(() => '')) || '';
+      const texto = ((await modalFeedback.innerText().catch(() => '')) || '').replace(/s+/g, ' ').trim();
 
       if (isError || titulo.toLowerCase().includes('erro') || titulo.toLowerCase().includes('atenção') || texto.toLowerCase().includes('não é possível')) {
         const btnOkErro = modalFeedback.locator('.swal2-confirm, button:has-text("Ok")').first();
@@ -272,7 +276,7 @@ export async function excluirTurmasEmLote(
         }
         await page.locator('.swal2-container').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
         console.warn(`⚠️ [Lote ${iteracao}] Impedimento para excluir "${descricaoDetectada}": ${titulo} - ${texto}`);
-        falhas.push({ descricao: descricaoDetectada, motivo: `${titulo} - ${texto}`.trim() });
+        falhas.push({ descricao: descricaoDetectada, motivo: `${titulo} - ${texto}`.trim(), chave: idDetectado || descricaoDetectada });
 
         // Clica em "Voltar" para retornar à consulta
         const btnVoltar = page.locator('a:has-text("Voltar"), button:has-text("Voltar")').first();
@@ -292,11 +296,11 @@ export async function excluirTurmasEmLote(
       await waitForSgeLoaders(page);
 
       // 6. Atualiza a grid para a próxima iteração
-      await page.locator('input[type="search"], #searchTerm, h4:has-text("Consulta de Turmas")').first().waitFor({ state: 'visible', timeout: 20000 });
+      await navegarParaConsultaTurmas(page);
       await executarBuscaGridTurmas(page, termo);
     } catch (err: any) {
       console.warn(`⚠️ Erro ao processar exclusão da turma "${descricaoDetectada}": ${err?.message}`);
-      falhas.push({ descricao: descricaoDetectada, motivo: err?.message || 'Erro inesperado' });
+      falhas.push({ descricao: descricaoDetectada, motivo: err?.message || 'Erro inesperado', chave: idDetectado || descricaoDetectada });
       await navegarParaConsultaTurmas(page);
       await executarBuscaGridTurmas(page, termo);
     }
@@ -307,6 +311,6 @@ export async function excluirTurmasEmLote(
   return {
     totalExcluidas: turmasExcluidas.length,
     turmasExcluidas,
-    falhas,
+    falhas: falhas.map(({ descricao, motivo }) => ({ descricao, motivo })),
   };
 }

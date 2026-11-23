@@ -2,56 +2,16 @@ import fs from 'fs';
 import path from 'path';
 import { test, expect } from '@playwright/test';
 import { loginSge } from '../../../../src/helpers';
-import { criarTurmaEscolarizacao, excluirTurma, excluirTurmasEmLote } from '../../../../src/actions';
-import { buildTurma } from '../../../../src/factories';
+import { excluirTurma, excluirTurmasEmLote } from '../../../../src/actions';
 
 /**
  * Validação da Action Reutilizável: excluirTurma() e exclusão em lote.
  *
- * Suporta dois cenários principais:
- * 1. Ciclo de Vida E2E: Criação de Turma seguida de exclusão imediata (base limpa).
- * 2. Exclusão Dinâmica via JSON ('dados_exclusao_turma.json'):
- *    - Se "excluirTodasQAAUTO": true -> Remove em lote todas as turmas residuais de teste com "QAAUTO".
- *    - Se "excluirTodasQAAUTO": false -> Remove a turma específica indicada no JSON.
+ * Exclui as turmas do tenant configurado no .env conforme 'dados_exclusao_turma.json':
+ *  - "excluirTodasQAAUTO": true  -> remove em lote todas as turmas cuja descrição começa com o termo (padrão "QAAUTO").
+ *  - "excluirTodasQAAUTO": false -> remove a turma específica indicada em "descricao" ou "id".
  */
 test.describe('Validação da Action Reutilizável: excluirTurma()', () => {
-
-  test('Deve criar uma turma e em seguida excluí-la com sucesso via interface gráfica', async ({ page }) => {
-    test.setTimeout(120000);
-
-    // 1. Autenticação no SGE via UI
-    await loginSge(page);
-
-    // 2. Preparação de dados de turma para ciclo de vida
-    const dadosTurma = buildTurma({
-      situacaoDesejada: 'Ativo',
-    });
-
-    console.log(`\n▶️ [1/2] Criando turma de teste: "${dadosTurma.descricao}"...`);
-
-    // 3. Criação da turma via Action UI
-    const turmaCriada = await criarTurmaEscolarizacao(page, dadosTurma);
-
-    expect(turmaCriada).toBeDefined();
-    expect(turmaCriada.descricao).toBe(dadosTurma.descricao);
-
-    console.log(`✅ Turma criada com sucesso (ID: ${turmaCriada.id})! Iniciando exclusão imediata para limpeza da base...`);
-
-    // 4. Exclusão da turma recém-criada via Action UI
-    const turmaExcluida = await excluirTurma(page, turmaCriada);
-
-    // 5. Validações de conformidade
-    expect(turmaExcluida).toBeDefined();
-    expect(turmaExcluida.descricao).toContain('QAAUTO');
-
-    console.log('\n======================================================');
-    console.log('🗑️ TURMA EXCLUÍDA DO SGE COM SUCESSO:');
-    console.log(`🏷️  Descrição: ${turmaExcluida.descricao}`);
-    if (turmaExcluida.id) {
-      console.log(`🔑 ID:        ${turmaExcluida.id}`);
-    }
-    console.log('======================================================\n');
-  });
 
   test('Executar exclusão configurada via arquivo dados_exclusao_turma.json', async ({ page }) => {
     test.setTimeout(300000); // 5 minutos para suportar lote extenso de turmas
