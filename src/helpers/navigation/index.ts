@@ -56,3 +56,4 @@ export * from './ocorrencia-saude-colaborador.navigation';
 export * from './formula-aprovacao.navigation';
 export * from './configurar-ano-escolar.navigation';
 export * from './planejamento-escola.navigation';
+export * from './item.navigation';
